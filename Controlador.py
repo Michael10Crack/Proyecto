@@ -5,6 +5,8 @@ class controlador:
     def __init__(self, controlador = BaseMySQL(), acceso = manejoUsuarios()):
         self.__controlador = controlador
         self.__acceso = acceso
+        
+        ####
     
     def conectarCont(self, username:str, password:str):
         bool = self.__controlador.conectar(username, password)         
