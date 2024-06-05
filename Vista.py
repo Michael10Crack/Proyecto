@@ -377,10 +377,12 @@ class programa(QDialog):
         if index == 1:
             regex = r'^[a-zA-Z0-9]+$'
             validator = QRegExpValidator(QRegExp(regex))
-            self.namepac.setValidator(validator)
-            self.lastnamepac.setValidator(validator)
-            self.age.setValidator(QIntValidator())
-            self.idpac.setValidator(validator)
+            self.idpac_buscar.setValidator(validator)
+            self.nameedtpac.setValidator(validator)
+            self.lastnameedtpac.setValidator(validator)
+            self.ageedtpac.setValidator(QIntValidator())
+            self.idedtpac.setValidator(validator)
+            self.desplegedtmed.setValidator(validator)
             self.addpac.clicked.connect(self.anadir)
             self.cancelpac.clicked.connect(self.volver)
             pass

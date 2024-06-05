@@ -66,6 +66,14 @@ class BaseMySQL:
         cursor.close()
         return True
 
+    def nombre_com(self):
+        cursor = self.__connection.cursor()
+        cursor.execute("SELECT CONCAT(nombre, ' ', apellido) FROM medicos ORDER BY nombre, apellido")
+        resultados = cursor.fetchall()
+        self.nombres_completos = [nombre[0] for nombre in resultados]
+        cursor.close()
+        return 
+
 
   
 class manejoUsuarios:
@@ -111,9 +119,7 @@ class manejoUsuarios:
             with open('acceso.json', 'w') as f:
                 json.dump(datos, f, indent=4)
             return True
-        return False
-            
-            
+        return False        
 
     def modificar(self, usernameviejo:str, passwordviejo:str ,username:str, password:str):
         if self.ingreso(usernameviejo, passwordviejo):
