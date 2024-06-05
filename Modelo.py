@@ -145,12 +145,14 @@ class manejoUsuarios:
                     return True
                 else:
                     return False    
-SERVER = 'localhost'
-USER = 'admin123'
-PASSWORD = 'contrasena123'
-DB = 'database'
 
-conexion = mysql.connector.connect(user=USER , password=PASSWORD , host=SERVER , database=DB)
+#me conecto desde fuera para facilidad                
+server = 'localhost'
+username = 'admin123'
+Password = 'contrasena123'
+database = 'database'
+
+conexion = mysql.connector.connect(user=username , password=Password, host=server , database=database)
 
 cursor = conexion.cursor()
 class manejodicom:
@@ -158,15 +160,17 @@ class manejodicom:
         self.dicom = pydicom.dcmread(self.path)
         self.path = path
 
-    def apply_modality_lut(self):
+    def apply_modality_lut(self): #funcion para hacer más visible/clara la imagen (contraste,brillo...)
         dm = self.dicom
         imagen = apply_modality_lut(dm.pixel_array, dm)
 
-        if imagen.dtype != np.uint8:
-            imagen = (np.maximum(imagen, 0) / imagen.max()) * 255.0
-            imagen = np.uint8(imagen)
+        if imagen.dtype != np.uint8: #normalicemos la imagen 
+            imagen = (np.maximum(imagen, 0) / imagen.max()) * 255.0 
+            imagen = np.uint8(imagen) #formato final np.uint8
 
         return QImage(imagen, imagen.shape[1], imagen.shape[0], QImage.Format_Grayscale8)
+    #convertimos la imagen a QImage para verla en la ventana 
+    #-pixeles-ancho(columnas)-altura(filas)-escala de grises
 
     def get_info_paciente(self):
         dm = self.dicom
@@ -178,7 +182,6 @@ class manejodicom:
         return nombre, id_paciente, edad, identificacion, med_cabecera
     
     def insert_patient_data(self):
-        cursor = self.__connection.cursor()
         patient_info = self.get_info_paciente()
         insertarinfo = 'INSERT INTO pacientes(nombre, apellido, edad, identifiacion, med_cabecera) VALUES (%s, %s, %s, %s, %s, %s)'
         cursor.execute(insertarinfo, patient_info)
