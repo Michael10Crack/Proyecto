@@ -172,19 +172,19 @@ class manejodicom:
     #convertimos la imagen a QImage para verla en la ventana 
     #-pixeles-ancho(columnas)-altura(filas)-escala de grises
 
-    def get_info_paciente(self):
-        dm = self.dicom
-        nombre = dm.get('PatientName', 'Desconocido')
-        id_paciente = dm.get('PatientID', 'Desconocido')
-        edad = dm.get('PatientAge', 'Desconocida')
-        identificacion = dm.get('identificacion', 'Desconocido')
-        med_cabecera = dm.get('med_cabecera', 'Desconocido')
-        return nombre, id_paciente, edad, identificacion, med_cabecera
+    # def get_info_paciente(self):
+    #     dm = self.dicom
+    #     nombre = dm.get('PatientName', 'Desconocido')
+    #     id_paciente = dm.get('PatientID', 'Desconocido')
+    #     edad = dm.get('PatientAge', 'Desconocida')
+    #     identificacion = dm.get('identificacion', 'Desconocido')
+    #     med_cabecera = dm.get('med_cabecera', 'Desconocido')
+    #     return nombre, id_paciente, edad, identificacion, med_cabecera
     
-    def insert_patient_data(self):
-        patient_info = self.get_info_paciente()
-        insertarinfo = 'INSERT INTO pacientes(nombre, apellido, edad, identifiacion, med_cabecera) VALUES (%s, %s, %s, %s, %s, %s)'
-        cursor.execute(insertarinfo, patient_info)
-        conexion.commit()
+    # def insert_patient_data(self):
+    #     patient_info = self.get_info_paciente()
+    #     insertarinfo = 'INSERT INTO pacientes(nombre, apellido, edad, identifiacion, med_cabecera) VALUES (%s, %s, %s, %s, %s, %s)'
+    #     cursor.execute(insertarinfo, patient_info)
+    #     conexion.commit()
 
 

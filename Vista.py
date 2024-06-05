@@ -1,10 +1,10 @@
 import sys 
 from Controlador import *
 from PyQt5.QtWidgets import QApplication, QDialog, QMessageBox, QLineEdit, QTableWidgetItem, QPushButton, QTableWidget, QFileDialog, QInputDialog 
-from PyQt5.QtGui import QRegExpValidator, QIntValidator
+from PyQt5.QtGui import QRegExpValidator, QIntValidator, QPixmap
 from PyQt5.QtCore import Qt,QRegExp
 from PyQt5.uic import loadUi
-import matplotlib.pyplot as plt
+import os
 
 
 class ventanaLogin(QDialog):
@@ -390,6 +390,7 @@ class programa(QDialog):
             pass
         if index == 3:
             pass
+            # self.browse.clicked.connect(self.procesar_dicom)
 
     def anadir(self):
         try:
@@ -399,6 +400,81 @@ class programa(QDialog):
         self.addpac.clicked.connect(self.ok)
 
 # Aquí se debe ver el botón ese pero no lo he puesto
+
+
+    def procesar_dicom(self):
+        ruta_carpeta = QFileDialog.getExistingDirectory(self, 'Seleccionar carpeta con archivos DICOM', '')
+        if ruta_carpeta:
+            archivos_dicom = [os.path.join(ruta_carpeta, file) for file in os.listdir(ruta_carpeta) if file.endswith('.dcm')]
+            if archivos_dicom:
+                    try:
+                        for file in archivos_dicom:
+                            dicom_data = pydicom.dcmread(file)                        
+                        # Procesar el archivo DICOM
+                            manejador_dicom = manejodicom(dicom_data)
+                            imagen_procesada = manejador_dicom.apply_modality_lut()
+                            
+                        self.exito(ruta_carpeta)
+                        
+                    except pydicom.errors.InvalidDicomError:
+                        # El archivo no es un archivo DICOM válido
+                        self.mostrar_advertencia()
+
+    def mostrar_imagen_procesada(self, imagen_procesada):
+        # Aquí puedes mostrar la imagen procesada en una ventana emergente
+        pass
+
+    def exito(self, ruta_carpeta):
+        # Mostrar una ventana emergente con un mensaje de procesamiento exitoso
+        msgBox = QMessageBox()
+        msgBox.setIcon(QMessageBox.Information)
+        msgBox.setText(f'Carpeta DICOM seleccionada: {ruta_carpeta}')
+        msgBox.setWindowTitle('Información')
+        msgBox.setStandardButtons(QMessageBox.Ok)
+        msgBox.exec()
+    def mostrar_advertencia(self):
+        # Mostrar una ventana emergente con un mensaje de advertencia
+        msgBox = QMessageBox()
+        msgBox.setIcon(QMessageBox.Warning)
+        msgBox.setText("La carpeta seleccionada contiene al menos 1 archivo diferente a .dcm.")
+        msgBox.setWindowTitle('Advertencia')
+        msgBox.setStandardButtons(QMessageBox.Ok)
+        msgBox.exec()
+
+
+
+    # def browse(self):
+    #     options = QFileDialog.Options()
+    #     options |= QFileDialog.DontUseNativeDialog
+    #     ruta_archivo = QFileDialog.getOpenFileName(self, 'Buscar archivo DICOM', '', 'Archivos DICOM (*.dcm)')
+    #     if ruta_archivo:
+    #         try:
+    #             pydicom.dcmread(ruta_archivo)
+    #             # El archivo es un archivo DICOM válido
+    #             msgBox = QMessageBox()
+    #             msgBox.setIcon(QMessageBox.Information)
+    #             msgBox.setText(f'Archivo DICOM seleccionado: {ruta_archivo}')
+    #             msgBox.setWindowTitle('Información')
+    #             msgBox.setStandardButtons(QMessageBox.Ok)
+    #             msgBox.exec()
+            
+    #             manejador_dicom = manejodicom(ruta_archivo)
+    #             imagen_procesada = manejador_dicom.apply_modality_lut()
+
+    #         except pydicom.errors.InvalidDicomError:
+    #             # El archivo no es un archivo DICOM válido
+    #             msgBox = QMessageBox()
+    #             msgBox.setIcon(QMessageBox.Warning)
+    #             msgBox.setText("El archivo seleccionado no es un archivo DICOM válido.")
+    #             msgBox.setWindowTitle('Advertencia')
+    #             msgBox.setStandardButtons(QMessageBox.Ok)
+    #             msgBox.exec()
+
+            
+
+
+
+
     def ok(self):
         namepac = self.namepac.text()
         lastnamepac = self.lastnamepac.text()
@@ -574,7 +650,6 @@ class programa(QDialog):
         self.Controller.eliminarPacCont(identificacion)
         self.patientTable.removeRow(row)
         
-              
 
 
 
