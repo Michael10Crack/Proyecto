@@ -12,6 +12,9 @@ class controlador:
     def desconectar(self):
         self.__controlador.desconectar()
     
+    def validarPacCont(self, identificacion :str):
+        return self.__controlador.validarPac(identificacion)
+    
     def ingresarPacCont(self, namepac:str, lastnamepac:str, agepac:str, idpac:str, medpac:str, url:str):
         return self.__controlador.ingresarPac(namepac, lastnamepac, agepac, idpac, medpac, url)
         
@@ -23,6 +26,9 @@ class controlador:
     
     def lista_medicosCont(self):
         return self.__controlador.lista_medicos()
+
+    def pacienteCon(self, idpac_estudio:str):
+        return self.__controlador.paciente(idpac_estudio)
         
     def ingresoCont(self, username:str, password:str):
         return self.__acceso.ingreso(username, password)

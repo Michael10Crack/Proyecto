@@ -38,7 +38,7 @@ class BaseMySQL:
             
     def ingresarPac(self, namepac:str, lastnamepac:str, agepac:str, idpac:str, medpac:str, url:str):
         if self.validarPac(idpac):
-            query = 'INSERT INTO pacientes (nombre, apellido, edad, identificacion, med_cabecera, url) VALUES (%s, %s, %s, %s, %s, %s, %s)'
+            query = 'INSERT INTO pacientes (nombre, apellido, edad, identificacion, med_cabecera, url) VALUES (%s, %s, %s, %s, %s, %s)'
             values = (namepac, lastnamepac, agepac, idpac, medpac, url)
             cursor = self.__connection.cursor()
             cursor.execute(query, values)
@@ -48,7 +48,7 @@ class BaseMySQL:
         return False
         
     def eliminarPac(self, idpac:str):
-        if self.validarPac(idpac) == None:
+        if self.validarPac(idpac) == 0:
             return False
         else:             
             query = 'DELETE FROM pacientes WHERE identificacion = %s'
@@ -79,16 +79,16 @@ class BaseMySQL:
         cursor.close()
         return nombres_completos
 
-    def paciente(self, identificacion:str):
+    def paciente(self, identificacion: str):
         query = 'SELECT * FROM pacientes WHERE identificacion = %s'
         cursor = self.__connection.cursor()
         cursor.execute(query, (identificacion,))
         paciente = cursor.fetchone()
         cursor.close()
-        namepac, lastnamepac, agepac, idpac, medpac, url, = self.paciente_variables(paciente)
+        namepac, lastnamepac, agepac, idpac, medpac, url = self.paciente_variables(paciente)
         return namepac, lastnamepac, agepac, idpac, medpac, url
 
-    def paciente_variables(tupla):
+    def paciente_variables(self, tupla):
         if tupla:
             return tupla  # Si la tupla no está vacía, simplemente devuélvela
         else:

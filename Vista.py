@@ -7,8 +7,6 @@ from PyQt5.QtGui import QRegExpValidator, QPixmap
 from PyQt5.QtCore import Qt, QRegExp
 from PyQt5.uic import loadUi
 
-
-
 class ventanaLogin(QDialog):
     def __init__(self):
         super().__init__()
@@ -27,7 +25,7 @@ class ventanaLogin(QDialog):
         self.password.setValidator(validator)
         self.minimizar.clicked.connect(self.minimizator)
         self.exit.clicked.connect(self.salir)  
-        self.ingresar.clicked.connect(self.login)
+        self.ingresar.clicked.connect(self.anadirLogin)
         self.nuevo.clicked.connect(self.newuser)
         self.editar.clicked.connect(self.edituser)
         self.password.setEchoMode(QLineEdit.Password)
@@ -39,6 +37,13 @@ class ventanaLogin(QDialog):
         self.Controller.desconectar()
         QApplication.quit()  
 
+    def anadirLogin(self):
+        try:
+            self.ingresar.clicked.disconnect()
+        except TypeError:
+            pass
+        self.ingresar.clicked.connect(self.login)
+        
     def login(self):
         username = self.username.text()
         password = self.password.text()
@@ -70,7 +75,7 @@ class ventanaLogin(QDialog):
         self.limpiar_campos()
         self.hide()
         self.ventanaedituser.show()
-           
+         
     # Metodos de implementación de eventos de ratón, dado que la ventana es personalizada
     def mousePressEvent(self, event): # Inicia el arrastre
         if event.buttons() == Qt.LeftButton:
@@ -211,7 +216,7 @@ class edituser(QDialog):
         self.password.setValidator(validator)
         self.minimizar.clicked.connect(self.minimizator)
         self.exit.clicked.connect(self.salir)  
-        self.ingresar.clicked.connect(self.login)
+        self.ingresar.clicked.connect(self.desconectIngNueUser)
         self.cancelar.clicked.connect(self.volver)
         self.cancelar_2.clicked.connect(self.volver)
         self.ingresar_2.clicked.connect(self.ok)
@@ -226,7 +231,7 @@ class edituser(QDialog):
         self.Controller.desconectar()
         QApplication.quit()  
 
-    def desconect(self):
+    def desconectIngNueUser(self):
         try:
             self.ingresar.clicked.disconnect()
         except TypeError:
@@ -349,6 +354,7 @@ class programa(QDialog):
         self.out.clicked.connect(self.salir)
         self.pacientes.clicked.connect(self.holapac)
         self.medicos.clicked.connect(self.holamed)
+        self.lista_med()
         self.hola()
 
     def minimizator(self):
@@ -388,17 +394,18 @@ class programa(QDialog):
 
     def update_widgets(self, index):
         if index == 1:
+            self.browse.setText("SELECCIONE EL ARCHIVO")
+            self.cargaedtpac.setText("SELECCIONE EL ARCHIVO")
             self.addpac.clicked.connect(self.anadirPacNuevo)
             self.cancelpac.clicked.connect(self.volver)
-            self.buscarpac.clicked.connect(self.busquedapac)
-            self.browse.clicked.connect(self.procesar_dicom)
-            self.lista_med()
+            self.browse.clicked.connect(self.anadirCargarNuevo)
         elif index == 2:
+            self.buscarpac.clicked.connect(self.anadirPacBus)
+            self.browse.setText("SELECCIONE EL ARCHIVO")
+            self.cargaedtpac.setText("SELECCIONE EL ARCHIVO")
             self.addedtpac.clicked.connect(self.anadirPacEdit)
             self.canceledtpac.clicked.connect(self.volver)
-            self.desplegedtmed.addItems(self.lista_med)
-            self.cargaedtpac.clicked.connect(self.procesar_dicom)
-            self.lista_med()
+            self.cargaedtpac.clicked.connect(self.anadirCargarEdit)
             self.groupBox_10.hide()
             pass
         elif index == 3:
@@ -412,9 +419,6 @@ class programa(QDialog):
             self.idpac_estudio.setValidator(validator)
             self.pacestudio.clicked.connect(self.estudio)
 
-            pass
-            # self.browse.clicked.connect(self.procesar_dicom)
-
     def anadirPacNuevo(self):
         try:
             self.addpac.clicked.disconnect()
@@ -422,16 +426,41 @@ class programa(QDialog):
             pass
         self.addpac.clicked.connect(self.okPacNuevo)
 
+    def anadirPacBus(self):
+        try:
+            self.buscarpac.clicked.disconnect()
+        except TypeError:
+            pass
+        self.buscarpac.clicked.connect(self.busquedaPac)
+       
     def anadirPacEdit(self):
         try:
             self.addedtpac.clicked.disconnect()
         except TypeError:
             pass
         self.addedtpac.clicked.connect(self.okPacEdit)
-
-# Aquí se debe ver el botón ese pero no lo he puesto
-    # self.browse.clicked.connect(self.procesar_dicom) # ESTE ES EL BOTON DE BUSCAR
-
+        
+    def anadirPacEli(self):
+        try:
+            self.paceliminar.clicked.disconnect()
+        except TypeError:
+            pass
+        self.paceliminar.clicked.connect(self.eliminarpac)   
+    
+    def anadirCargarNuevo(self):
+        try:
+            self.browse.clicked.disconnect()
+        except TypeError:
+            pass
+        self.browse.clicked.connect(self.procesar_dicom)   
+    
+    def anadirCargarEdit(self):
+        try:
+            self.cargaedtpac.clicked.disconnect()
+        except TypeError:
+            pass
+        self.cargaedtpac.clicked.connect(self.procesar_dicom) 
+    
     def procesar_dicom(self):
         ruta_carpeta = QFileDialog.getExistingDirectory(self, 'Seleccionar carpeta con archivos DICOM', '')
         if ruta_carpeta:
@@ -444,7 +473,9 @@ class programa(QDialog):
                             manejador_dicom = self.Controller.manejodicompath(dicom_data)
                             imagen_procesada = self.Controller.apply_modality_lut(manejador_dicom.pixel_array)
                         self.url = ruta_carpeta
-                        self.exito(ruta_carpeta) 
+                        self.exito(ruta_carpeta)
+                        self.ageedtpac.setText("ARCHIVO CARGADO")
+                        self.cargaedtpac.setText("ARCHIVO CARGADO")
                     except pydicom.errors.InvalidDicomError:
                         # El archivo no es un archivo DICOM válido
                         self.mostrar_advertencia()
@@ -497,7 +528,7 @@ class programa(QDialog):
         idpac = ''.join(c.upper() if c.isalpha() else c for c in texto)
         medpac = self.nombre_medico
         url = self.url
-        if not namepac or not lastnamepac or not agepac or not idpac or not medpac or not url:
+        if not namepac or not lastnamepac or not agepac or not idpac or medpac == '' or url == '':
             self.nombre_medico = ""
             self.url = ""
             msgBox = QMessageBox()
@@ -506,17 +537,21 @@ class programa(QDialog):
             msgBox.setWindowTitle('Campos incompletos')
             msgBox.setStandardButtons(QMessageBox.Ok)
             self.limpiar_campos_PacNuevo()
+            self.browse.setText("SELECCIONE EL ARCHIVO")
+            self.url = ''
             msgBox.exec()
         else:
             bool = self.Controller.ingresarPacCont(namepac, lastnamepac, agepac, idpac, medpac, url)
             if bool:
                 msgBox = QMessageBox()
                 msgBox.setIcon(QMessageBox.Warning)
-                msgBox.setText('Usuario ingresado exitosamente')
-                msgBox.setWindowTitle('Usuario ingresado')
+                msgBox.setText('Paciente ingresado exitosamente')
+                msgBox.setWindowTitle('Paciente ingresado')
                 msgBox.setStandardButtons(QMessageBox.Ok)
                 self.limpiar_campos_PacNuevo()
                 self.groupBox_10.hide()
+                self.browse.setText("SELECCIONE EL ARCHIVO")
+                self.url = ''
                 msgBox.exec()
             else:
                 msgBox = QMessageBox()
@@ -525,6 +560,8 @@ class programa(QDialog):
                 msgBox.setWindowTitle('Usuario existente')
                 msgBox.setStandardButtons(QMessageBox.Ok)
                 self.limpiar_campos_PacNuevo()
+                self.agepac.setText("SELECCIONE EL ARCHIVO")
+                self.url = ''
                 msgBox.exec()
         
     def okPacEdit(self):
@@ -536,7 +573,7 @@ class programa(QDialog):
         medpac = self.nombre_medico
         url = self.url
         idpac_buscar = self.idpac_buscar.text()
-        if not nameedtpac or not lastnameedtpac or not ageedtpac or not idedtpac or not medpac or not url:
+        if not nameedtpac or not lastnameedtpac or not ageedtpac or not idedtpac or not medpac == '' or not url == '':
             self.nombre_medico = ""
             self.url = ""
             msgBox = QMessageBox()
@@ -544,25 +581,30 @@ class programa(QDialog):
             msgBox.setText('Por favor, complete todos los campos.')
             msgBox.setWindowTitle('Campos incompletos')
             msgBox.setStandardButtons(QMessageBox.Ok)
+            self.limpiar_campos_PacEdit()
             msgBox.exec()
         else:
             bool = self.Controller.editarPacCont(idpac_buscar, idedtpac, nameedtpac, lastnameedtpac, ageedtpac, medpac, url )
             if bool:
                 msgBox = QMessageBox()
                 msgBox.setIcon(QMessageBox.Warning)
-                msgBox.setText('Usuario ingresado exitosamente')
-                msgBox.setWindowTitle('Usuario ingresado')
+                msgBox.setText('Paciente ingresado exitosamente')
+                msgBox.setWindowTitle('Paciente ingresado')
                 msgBox.setStandardButtons(QMessageBox.Ok)
                 self.limpiar_campos_PacEdit()
                 self.groupBox_10.hide()
+                self.cargaedtpac.setText("SELECCIONE EL ARCHIVO")
+                self.url = ''
                 msgBox.exec()
             else:
                 msgBox = QMessageBox()
                 msgBox.setIcon(QMessageBox.Warning)
-                msgBox.setText('Ya existe un usuario con el ID diligenciado.\nIngrese uno diferente.')
+                msgBox.setText('No existe un paciente con el ID diligenciado.')
                 msgBox.setWindowTitle('Usuario existente')
                 msgBox.setStandardButtons(QMessageBox.Ok)
                 self.limpiar_campos_PacEdit()
+                self.cargaedtpac.setText("SELECCIONE EL ARCHIVO")
+                self.url = ''
                 msgBox.exec()
 
     def limpiar_campos_PacNuevo(self):
@@ -597,27 +639,38 @@ class programa(QDialog):
         
     def lista_med(self):
         lista_medicos = self.Controller.lista_medicosCont()
+        lista_medicos.insert(0, "")
         self.desplegmed.addItems(lista_medicos)
         self.desplegedtmed.addItems(lista_medicos)
-        self.desplegmed.currentTextChanged.connect(self.actualizar_nombre_seleccionado)
-        self.desplegedtmed.currentTextChanged.connect(self.actualizar_nombre_seleccionado)
+        self.desplegmed.currentTextChanged.connect(self.actualizar_nombremed_seleccionado)
+        self.desplegedtmed.currentTextChanged.connect(self.actualizar_nombremed_seleccionado)
         
-    def actualizar_nombre_seleccionado(self, nombre_seleccionado):
+    def actualizar_nombremed_seleccionado(self, nombre_seleccionado):
         self.nombre_medico = nombre_seleccionado
 
-    def busquedapac(self):
+    def busquedaPac(self):
         texto = self.idpac_buscar.text()
         idpac_buscar = ''.join(c.upper() if c.isalpha() else c for c in texto)
-        if self.Controller.validarPacCont(idpac_buscar):
-            self.groupBox_10.show()
-        else:
+        if not idpac_buscar:
             msgBox = QMessageBox()
             msgBox.setIcon(QMessageBox.Warning)
-            msgBox.setText('Ya existe un usuario con el ID diligenciado.')
-            msgBox.setWindowTitle('Usuario no existe')
+            msgBox.setText('Por favor, complete el campo.')
+            msgBox.setWindowTitle('Campo incompleto')
             msgBox.setStandardButtons(QMessageBox.Ok)
             self.idpac_buscar.setText("")
             msgBox.exec()
+        else:
+            if self.Controller.validarPacCont(idpac_buscar):
+                msgBox = QMessageBox()
+                msgBox.setIcon(QMessageBox.Warning)
+                msgBox.setText('No existe un paciente con el ID diligenciado.')
+                msgBox.setWindowTitle('Paciente no existe')
+                msgBox.setStandardButtons(QMessageBox.Ok)
+                self.idpac_buscar.setText("")
+                msgBox.exec()
+            else:
+                self.groupBox_10.show()
+
 
     def eliminarpac(self):
         texto = self.idpac_eliminar.text()
@@ -628,40 +681,60 @@ class programa(QDialog):
             msgBox.setText('Por favor, complete el campo.')
             msgBox.setWindowTitle('Campo incompleto')
             msgBox.setStandardButtons(QMessageBox.Ok)
-            msgBox.exec()
-        bool = self.Controller.eliminarPacCont(idpac_eliminar)
-        if bool:
-            msgBox = QMessageBox()
-            msgBox.setIcon(QMessageBox.Warning)
-            msgBox.setText('Paciente eliminado exitosamente')
-            msgBox.setWindowTitle('Paciente eliminado')
-            msgBox.setStandardButtons(QMessageBox.Ok)
             self.idpac_eliminar.setText("")
             msgBox.exec()
+            
+            
+            
+        if not idpac_eliminar:
+        self.mostrarMensaje('Campo incompleto', 'Por favor, complete el campo.')
+        return
+
+    eliminado_exitosamente = self.Controller.eliminarPacCont(idpac_eliminar)
+    
+    if eliminado_exitosamente:
+        self.mostrarMensaje('Paciente eliminado', 'Paciente eliminado exitosamente.')
+    else:
+        self.mostrarMensaje('Paciente no existente', 'Paciente no existente en la base de datos.')
+
+    self.idpac_eliminar.setText("")
+            
+            
+            
         else:
-            msgBox = QMessageBox()
-            msgBox.setIcon(QMessageBox.Warning)
-            msgBox.setText('Paciente no existente en la base de datos')
-            msgBox.setWindowTitle('Paciente no existente')
-            msgBox.setStandardButtons(QMessageBox.Ok)
-            self.idpac_eliminar.setText("")
-            msgBox.exec()
+            bool = self.Controller.eliminarPacCont(idpac_eliminar)
+            if bool:
+                msgBox = QMessageBox()
+                msgBox.setIcon(QMessageBox.Warning)
+                msgBox.setText('Paciente no existente en la base de datos')
+                msgBox.setWindowTitle('Paciente no existente')
+                msgBox.setStandardButtons(QMessageBox.Ok)
+                self.idpac_eliminar.setText("")
+                msgBox.exec() 
+            else:
+                msgBox = QMessageBox()
+                msgBox.setIcon(QMessageBox.Warning)
+                msgBox.setText('Paciente eliminado exitosamente')
+                msgBox.setWindowTitle('Paciente eliminado')
+                msgBox.setStandardButtons(QMessageBox.Ok)
+                self.idpac_eliminar.setText("")
+                msgBox.exec()
 
     def estudio(self):
         texto = self.idpac_estudio.text()
         idpac_estudio = ''.join(c.upper() if c.isalpha() else c for c in texto)
         if self.Controller.validarPacCont(idpac_estudio):
-            namepac, lastnamepac, agepac, idpac, medpac, url, = self.Controller.pacienteCon(idpac_estudio)
-            self.abrir_dicom(namepac, lastnamepac, agepac, idpac, medpac, url)
-        else:
             msgBox = QMessageBox()
             msgBox.setIcon(QMessageBox.Warning)
-            msgBox.setText('Ya existe un usuario con el ID diligenciado.')
+            msgBox.setText('No existe un usuario con el ID diligenciado.')
             msgBox.setWindowTitle('Usuario no existe')
             msgBox.setStandardButtons(QMessageBox.Ok)
             self.idpac_buscar.setText("")
             msgBox.exec()
-
+        else:
+            namepac, lastnamepac, agepac, idpac, medpac, url, = self.Controller.pacienteCon(idpac_estudio)
+            self.abrir_dicom(namepac, lastnamepac, agepac, idpac, medpac, url)
+           
     def holamed(self):
         self.base.setCurrentIndex(2)
         self.newmed.clicked.connect(self.nuevopac)
@@ -669,7 +742,6 @@ class programa(QDialog):
         self.erasemed.clicked.connect(self.borrarmed)
     
     # Metodos de implementación de eventos de ratón, dado que la ventana es personalizada
-
     def mousePressEvent(self, event): # Inicia el arrastre
         if event.buttons() == Qt.LeftButton:
             self.dragging = True # Se indica que está en modo de arrastre
@@ -696,7 +768,6 @@ class VentanaEmergente(QDialog):
         self.exit.clicked.connect(self.salir)
         self.setWindowFlags(Qt.FramelessWindowHint)
         self.setAttribute(Qt.WA_TranslucentBackground)
-        self.setupUi(self)
         self.horizontalSlider.valueChanged.connect(self.actualizar_imagen) #configurar el slider
         self.nombreline.setText(namepac)
         self.apellidoline.setText(lastnamepac)
@@ -716,14 +787,11 @@ class VentanaEmergente(QDialog):
         self.actualizar_imagen()
 
     def actualizar_imagen(self):
-        indice = self.deslizador1.value()
-        # Obtener la imagen correspondiente al índice
+        indice = self.horizontalSlider.value()
         imagen = self.imagen_procesada[indice]
-        #convertir a QPixmap para ver en el Qlabel
         pixmap = QPixmap.fromImage(imagen)
         self.label.setPixmap(pixmap)
-
-    # Metodos de implementación de eventos de ratón, dado que la ventana es personalizada
+# Metodos de implementación de eventos de ratón, dado que la ventana es personalizada
     def mousePressEvent(self, event): # Inicia el arrastre
         if event.buttons() == Qt.LeftButton:
             self.dragging = True # Se indica que está en modo de arrastre
