@@ -3,7 +3,7 @@ import json
 import numpy as np
 from pydicom.pixel_data_handlers.util import apply_modality_lut
 import pydicom
-from PyQt5.QtGui import QImage
+from PyQt5.QtGui import QImage, qRgb
 
 class BaseMySQL:
     def __init__(self):
@@ -222,21 +222,29 @@ class manejoUsuarios:
     #-pixeles-ancho(columnas)-altura(filas)-escala de grises
 
 class manejodicom:
-    def _init_(self):
-        pass
-        
+    @staticmethod # es un método estático que no necesita acceder a los atributos de instancia.
+ 
     def dicom(path):
-        return pydicom.dcmread(path)
+        return path
 
-    def apply_modality_lut(self): #funcion para hacer más visible/clara la imagen (contraste,brillo...)
-        dm = self.dicom()
-        imagen = apply_modality_lut(dm.pixel_array, dm)
+    def apply_modality_lut(self, path): #funcion para hacer más visible/clara la imagen (contraste,brillo...)
+        dm = self.dicom(path)  # Llama al método dicom con el objeto FileDataset
+        imagen = dm.pixel_array
 
-        if imagen.dtype != np.uint8: #normalicemos la imagen 
+        if imagen.dtype != np.uint8: # Normalizamos la imagen 
             imagen = (np.maximum(imagen, 0) / imagen.max()) * 255.0 
-            imagen = np.uint8(imagen) #formato final np.uint8
+            imagen = np.uint8(imagen) # Formato final np.uint8
 
-        return QImage(imagen, imagen.shape[1], imagen.shape[0], QImage.Format_Grayscale8)
+        # Convertir la imagen a QImage
+        height, width = imagen.shape
+        qimage = QImage(width, height, QImage.Format_Grayscale8)
+
+        for y in range(height):
+            for x in range(width):
+                pixel_value = imagen[y][x]
+                qimage.setPixel(x, y, qRgb(pixel_value, pixel_value, pixel_value))
+
+        return qimage
     
     
     

@@ -442,7 +442,7 @@ class programa(QDialog):
                             dicom_data = pydicom.dcmread(file)                        
                         # Procesar el archivo DICOM
                             manejador_dicom = self.Controller.manejodicompath(dicom_data)
-                            imagen_procesada = self.Controller.apply_modality_lut()
+                            imagen_procesada = self.Controller.apply_modality_lut(manejador_dicom.pixel_array)
                         self.url = ruta_carpeta
                         self.exito(ruta_carpeta) 
                     except pydicom.errors.InvalidDicomError:
@@ -460,7 +460,7 @@ class programa(QDialog):
                             dicom_data = pydicom.dcmread(file)                        
                         # Procesar el archivo DICOM
                             manejador_dicom = self.Controller.manejodicompath(dicom_data)
-                            imagen_procesada = self.Controller.apply_modality_lut()
+                            imagen_procesada = self.Controller.apply_modality_lut(manejador_dicom.pixel_array)
                         self.mostrar_imagenes_dicom(imagen_procesada, namepac, lastnamepac, agepac, idpac, medpac)
                     except pydicom.errors.InvalidDicomError:
                         # El archivo no es un archivo DICOM válido
@@ -505,6 +505,7 @@ class programa(QDialog):
             msgBox.setText('Por favor, complete todos los campos.')
             msgBox.setWindowTitle('Campos incompletos')
             msgBox.setStandardButtons(QMessageBox.Ok)
+            self.limpiar_campos_PacNuevo()
             msgBox.exec()
         else:
             bool = self.Controller.ingresarPacCont(namepac, lastnamepac, agepac, idpac, medpac, url)
