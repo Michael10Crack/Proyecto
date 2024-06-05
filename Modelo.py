@@ -1,5 +1,9 @@
 import mysql.connector
 import json
+import numpy as np
+from pydicom.pixel_data_handlers.util import apply_modality_lut
+import pydicom
+from PyQt5.QtGui import QImage
 
 class BaseMySQL:
     def __init__(self):
@@ -199,3 +203,37 @@ class manejoUsuarios:
                     return True
                 else:
                     return False    
+
+
+    def _init_(self,path):
+        self.dicom = pydicom.dcmread(self.path)
+        self.path = path
+
+    def apply_modality_lut(self): #funcion para hacer más visible/clara la imagen (contraste,brillo...)
+        dm = self.dicom
+        imagen = apply_modality_lut(dm.pixel_array, dm)
+
+        if imagen.dtype != np.uint8: #normalicemos la imagen 
+            imagen = (np.maximum(imagen, 0) / imagen.max()) * 255.0 
+            imagen = np.uint8(imagen) #formato final np.uint8
+
+        return QImage(imagen, imagen.shape[1], imagen.shape[0], QImage.Format_Grayscale8)
+    #convertimos la imagen a QImage para verla en la ventana 
+    #-pixeles-ancho(columnas)-altura(filas)-escala de grises
+
+class manejodicom:
+    def _init_(self, path):
+        self.dicom = pydicom.dcmread(self.path)
+        self.path = path
+
+    def apply_modality_lut(self): #funcion para hacer más visible/clara la imagen (contraste,brillo...)
+        dm = self.dicom
+        imagen = apply_modality_lut(dm.pixel_array, dm)
+
+        if imagen.dtype != np.uint8: #normalicemos la imagen 
+            imagen = (np.maximum(imagen, 0) / imagen.max()) * 255.0 
+            imagen = np.uint8(imagen) #formato final np.uint8
+
+        return QImage(imagen, imagen.shape[1], imagen.shape[0], QImage.Format_Grayscale8)
+    #convertimos la imagen a QImage para verla en la ventana 
+    #-pixeles-ancho(columnas)-altura(filas)-escala de grises

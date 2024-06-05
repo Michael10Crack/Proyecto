@@ -3,8 +3,8 @@ import pydicom
 import os
 from Controlador import *
 from PyQt5.QtWidgets import QApplication, QDialog, QMessageBox, QLineEdit, QFileDialog
-from PyQt5.QtGui import QRegExpValidator, QIntValidator, QPixmap
-from PyQt5.QtCore import Qt,QRegExp
+from PyQt5.QtGui import QRegExpValidator, QPixmap
+from PyQt5.QtCore import Qt, QRegExp
 from PyQt5.uic import loadUi
 
 
@@ -44,6 +44,7 @@ class ventanaLogin(QDialog):
         password = self.password.text()
         existe = self.Controller.ingresoCont(username, password)
         if existe:
+            self.Controller.conectar()
             self.vetView = programa()
             self.vetView.show()
             self.close()
@@ -365,46 +366,47 @@ class programa(QDialog):
         self.base.setCurrentIndex(1) 
         self.edicionespac.show()
         self.edicionespac.setCurrentIndex(0)
+        self.hojaspac()
         self.newpac.clicked.connect(lambda: self.edicionespac.setCurrentIndex(1))
         self.editpac.clicked.connect(lambda: self.edicionespac.setCurrentIndex(2))
         self.erasepac.clicked.connect(lambda: self.edicionespac.setCurrentIndex(3))
         self.estudiospac.clicked.connect(lambda: self.edicionespac.setCurrentIndex(4))
-        self.base.currentChanged.connect(self.update_widgets)
+        self.edicionespac.currentChanged.connect(self.update_widgets)
         
+    def hojaspac(self):
+        regex = r'^[a-zA-Z0-9]+$'
+        validator = QRegExpValidator(QRegExp(regex))
+        self.namepac.setValidator(validator)
+        self.lastnamepac.setValidator(validator)
+        self.agepac.setValidator(QRegExpValidator(QRegExp("[0-9]*")))
+        self.idpac.setValidator(validator)
+        self.idpac_buscar.setValidator(validator)
+        self.nameedtpac.setValidator(validator)
+        self.lastnameedtpac.setValidator(validator)
+        self.ageedtpac.setValidator(QRegExpValidator(QRegExp("[0-9]*")))
+        self.idedtpac.setValidator(validator)
+
     def update_widgets(self, index):
         if index == 1:
-            regex = r'^[a-zA-Z0-9]+$'
-            validator = QRegExpValidator(QRegExp(regex))
-            self.namepac.setValidator(validator)
-            self.lastnamepac.setValidator(validator)
-            self.age.setValidator(QIntValidator())
-            self.idpac.setValidator(validator)
             self.addpac.clicked.connect(self.anadirPacNuevo)
             self.cancelpac.clicked.connect(self.volver)
-            self.desplegmed.addItems(self.lista_med)
-            self.browse.clicked.connect(self.procesar_dicom)
-        if index == 2:
-            regex = r'^[a-zA-Z0-9]+$'
-            validator = QRegExpValidator(QRegExp(regex))
-            self.idpac_buscar.setValidator(validator)
             self.buscarpac.clicked.connect(self.busquedapac)
-            self.nameedtpac.setValidator(validator)
-            self.lastnameedtpac.setValidator(validator)
-            self.ageedtpac.setValidator(QIntValidator())
-            self.idedtpac.setValidator(validator)
-            self.desplegedtmed.setValidator(validator)
+            self.browse.clicked.connect(self.procesar_dicom)
+            self.lista_med()
+        elif index == 2:
             self.addedtpac.clicked.connect(self.anadirPacEdit)
             self.canceledtpac.clicked.connect(self.volver)
             self.desplegedtmed.addItems(self.lista_med)
             self.cargaedtpac.clicked.connect(self.procesar_dicom)
+            self.lista_med()
             self.groupBox_10.hide()
             pass
-        if index == 3:
+        elif index == 3:
             regex = r'^[a-zA-Z0-9]+$'
             validator = QRegExpValidator(QRegExp(regex))
             self.idpac_eliminar.setValidator(validator)
             self.paceliminar.clicked.connect(self.eliminarpac)
-        if index == 4:
+        elif index == 4:
             regex = r'^[a-zA-Z0-9]+$'
             validator = QRegExpValidator(QRegExp(regex))
             self.idpac_estudio.setValidator(validator)
@@ -457,7 +459,7 @@ class programa(QDialog):
                         for file in archivos_dicom:
                             dicom_data = pydicom.dcmread(file)                        
                         # Procesar el archivo DICOM
-                            manejador_dicom = manejodicom(dicom_data)
+                            manejador_dicom = self.Controller.manejodicompath(dicom_data)
                             imagen_procesada = manejador_dicom.apply_modality_lut()
                         self.mostrar_imagenes_dicom(imagen_procesada, namepac, lastnamepac, agepac, idpac, medpac)
                     except pydicom.errors.InvalidDicomError:
@@ -591,8 +593,11 @@ class programa(QDialog):
         self.edicionespac.setCurrentIndex(0)
         
     def lista_med(self):
-        self.desplegedtmed.addItems(self.Controller.lista_medCont)
-        self.comboBox.currentTextChanged.connect(self.actualizar_nombre_seleccionado)
+        lista_medicos = self.Controller.lista_medicosCont()
+        self.desplegmed.addItems(lista_medicos)
+        self.desplegedtmed.addItems(lista_medicos)
+        self.desplegmed.currentTextChanged.connect(self.actualizar_nombre_seleccionado)
+        self.desplegedtmed.currentTextChanged.connect(self.actualizar_nombre_seleccionado)
         
     def actualizar_nombre_seleccionado(self, nombre_seleccionado):
         self.nombre_medico = nombre_seleccionado
@@ -679,7 +684,6 @@ class programa(QDialog):
                 # desplazamiento del cursor desde el momento en que se inició el arrastre.
         except:
             pass
-
 
 class VentanaEmergente(QDialog):
     def __init__(self, namepac:str, lastnamepac:str, agepac:str, idpac:str, medpac:str):
