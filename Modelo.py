@@ -2,6 +2,10 @@ import mysql.connector
 import json
 import pandas as pd
 import scipy.io as sio
+import numpy as np
+from pydicom.pixel_data_handlers.util import apply_modality_lut
+import pydicom
+from PyQt5.QtGui import QImage
 #
 class BaseMySQL:
     def __init__(self):
@@ -141,8 +145,43 @@ class manejoUsuarios:
                     return True
                 else:
                     return False    
+SERVER = 'localhost'
+USER = 'admin123'
+PASSWORD = 'contrasena123'
+DB = 'database'
+
+conexion = mysql.connector.connect(user=USER , password=PASSWORD , host=SERVER , database=DB)
+
+cursor = conexion.cursor()
+class manejodicom:
+    def __init__(self,path):
+        self.dicom = pydicom.dcmread(self.path)
+        self.path = path
+
+    def apply_modality_lut(self):
+        dm = self.dicom
+        imagen = apply_modality_lut(dm.pixel_array, dm)
+
+        if imagen.dtype != np.uint8:
+            imagen = (np.maximum(imagen, 0) / imagen.max()) * 255.0
+            imagen = np.uint8(imagen)
+
+        return QImage(imagen, imagen.shape[1], imagen.shape[0], QImage.Format_Grayscale8)
+
+    def get_info_paciente(self):
+        dm = self.dicom
+        nombre = dm.get('PatientName', 'Desconocido')
+        id_paciente = dm.get('PatientID', 'Desconocido')
+        edad = dm.get('PatientAge', 'Desconocida')
+        identificacion = dm.get('identificacion', 'Desconocido')
+        med_cabecera = dm.get('med_cabecera', 'Desconocido')
+        return nombre, id_paciente, edad, identificacion, med_cabecera
     
-class manejoArchivos:
-    def __init__(self):
-                    return False
+    def insert_patient_data(self):
+        cursor = self.__connection.cursor()
+        patient_info = self.get_info_paciente()
+        insertarinfo = 'INSERT INTO pacientes(nombre, apellido, edad, identifiacion, med_cabecera) VALUES (%s, %s, %s, %s, %s, %s)'
+        cursor.execute(insertarinfo, patient_info)
+        conexion.commit()
+
 
