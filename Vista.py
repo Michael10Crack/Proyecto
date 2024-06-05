@@ -5,9 +5,7 @@ from PyQt5.QtGui import QRegExpValidator, QIntValidator
 from PyQt5.QtCore import Qt,QRegExp
 from PyQt5.uic import loadUi
 import matplotlib.pyplot as plt
-import numpy as np 
-import scipy.io as sio
-#############################################################################################
+
 
 class ventanaLogin(QDialog):
     def __init__(self):
@@ -87,8 +85,7 @@ class ventanaLogin(QDialog):
                 # desplazamiento del cursor desde el momento en que se inició el arrastre.
         except:
             pass
-
-          
+      
 class newuser(QDialog):
     def __init__(self, ventana1):
         super().__init__()
@@ -136,7 +133,7 @@ class newuser(QDialog):
             msgBox.setStandardButtons(QMessageBox.Ok)
             msgBox.exec()
         if password == password_2:
-            bool = self.Controller.nuevousuarioCont(username, password)
+            bool = self.Controller.nuevoUsuarioCont(username, password)
             if bool:
                 msgBox = QMessageBox()
                 msgBox.setIcon(QMessageBox.Warning)
@@ -275,7 +272,7 @@ class edituser(QDialog):
             msgBox.exec()
             return
         if password_1 == password_2:
-            bool = self.Controller.modificarCont(usernameviejo, passwordnuevo, username, password_1)
+            bool = self.Controller.modificarUsuarioCont(usernameviejo, passwordnuevo, username, password_1)
             if bool:
                 msgBox = QMessageBox()
                 msgBox.setIcon(QMessageBox.Warning)
@@ -565,6 +562,43 @@ class programa(QDialog):
         self.Controller.eliminarPacCont(identificacion)
         self.patientTable.removeRow(row)
         
+              
+#############################################################################################
+    
+    def cargar_mat(self):
+        ruta, _ = QFileDialog.getOpenFileName(self, 'Cargar archivo MAT', '', 'Archivos MAT (*.mat)')
+        if ruta:
+            clave, ok = QInputDialog.getText(self, 'Ingresar clave', 'Ingrese la clave con la que quiere asociar el objeto:')
+            if ok and clave:
+                try:
+                    archivo_id = self.Controller.insertarArchivoCont(clave, 'MAT', ruta)
+                    data = self.Controller.cargarMatCont(ruta)
+                    for key in data.keys():
+                        if key.startswith('__'):
+                            continue
+                        self.Controller.insertarDatosMatCont(archivo_id, key)
+                    QMessageBox.information(self, 'Éxito', f'Archivo MAT {clave} cargado exitosamente.')
+                except Exception as e:
+                    QMessageBox.critical(self, 'Error', f'Error al cargar archivo MAT: {e}')
+
+    def cargar_csv(self):
+        ruta, _ = QFileDialog.getOpenFileName(self, 'Cargar archivo CSV', '', 'Archivos CSV (*.csv)')
+        if ruta:
+            clave, ok = QInputDialog.getText(self, 'Ingresar clave', 'Ingrese la clave con la que quiere asociar el objeto:')
+            if ok and clave:
+                try:
+                    archivo_id = self.Controller.insertarArchivoCont(clave, 'CSV', ruta)
+                    datos = self.Controller.cargarCsvCont(ruta)
+                    for columna in datos.columns:
+                        self.Controller.insertarDatosCsvCont(archivo_id, columna)
+                    QMessageBox.information(self, 'Éxito', f'Archivo CSV {clave} cargado exitosamente.')
+                except Exception as e:
+                    QMessageBox.critical(self, 'Error', f'Error al cargar archivo CSV: {e}')
+
+
+
+
+#############################################################################################
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

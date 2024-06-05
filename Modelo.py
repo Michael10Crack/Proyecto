@@ -68,6 +68,131 @@ class BaseMySQL:
         return True
 
 class manejoUsuarios:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    def insertarArchivo(self, clave, tipo, ruta):
+        query = 'INSERT INTO archivos (clave, tipo, ruta) VALUES (%s, %s, %s)'
+        values = (clave, tipo, ruta)
+        cursor = self.__connection.cursor()
+        cursor.execute(query, values)
+        self.__connection.commit()
+        archivo_id = cursor.lastrowid
+        cursor.close()
+        return archivo_id
+
+    def insertarDatosMat(self, archivo_id, nombre_matriz):
+        query = 'INSERT INTO datos_mat (archivo_id, nombre_matriz) VALUES (%s, %s)'
+        values = (archivo_id, nombre_matriz)
+        cursor = self.__connection.cursor()
+        cursor.execute(query, values)
+        self.__connection.commit()
+        cursor.close()
+
+    def insertarDatosCsv(self, archivo_id, nombre_columna):
+        query = 'INSERT INTO datos_csv (archivo_id, nombre_columna) VALUES (%s, %s)'
+        values = (archivo_id, nombre_columna)
+        cursor = self.__connection.cursor()
+        cursor.execute(query, values)
+        self.__connection.commit()
+        cursor.close()
+
+    def cargarMat(self, ruta, controlador):
+        try:
+            data = sio.loadmat(ruta)
+            return data, None 
+        except Exception as e:
+            mensaje_error = f'Error al cargar archivo MAT: {e}'
+            controlador.mostrarMensajeError(mensaje_error)
+            return None, mensaje_error
+
+    def cargarCsv(self, ruta, controlador, delimiter=','): #el código solo recibe delimitaciones por comas ',' 
+        try:
+            data = pd.read_csv(ruta, delimiter=delimiter)
+            return data
+        except Exception as e:
+            mensaje_error = f'Error al cargar archivo CSV: {e}'
+            controlador.mostrarMensajeError(mensaje_error)
+            return None, mensaje_error
+        
+    def obtenerArchivos(self, tipo=None, clave=None):
+        query = 'SELECT id, clave, tipo, ruta FROM archivos'
+        values = ()
+        if tipo and clave:
+            query += ' WHERE tipo = %s AND clave = %s'
+            values = (tipo, clave)
+        elif tipo:
+            query += ' WHERE tipo = %s'
+            values = (tipo,)
+        elif clave:
+            query += ' WHERE clave = %s'
+            values = (clave,)
+    
+        cursor = self.__connection.cursor()
+        cursor.execute(query, values)
+        archivos = cursor.fetchall()
+        cursor.close()
+        return archivos
+            
+    def descargarArchivoMat(self, clave):
+        archivos = self.obtenerArchivos(tipo='MAT', clave=clave)
+        if archivos:
+            archivo = archivos[0]  
+            ruta = archivo[3]
+            data = sio.loadmat(ruta)
+            return data
+        return None
+
+    def descargarArchivoCsv(self, clave):
+        archivos = self.obtenerArchivos(tipo='CSV', clave=clave)
+        if archivos:
+            archivo = archivos[0]  
+            ruta = archivo[3]
+            df = pd.read_csv(ruta)
+            return df
+        return None
+    
+    def eliminarArchivo(self, clave):
+        try:
+            archivos = self.obtenerArchivos(clave=clave)
+            if archivos:
+                archivo = archivos[0]
+                with self.__connection.cursor() as cursor:
+                    # Eliminar el archivo de la tabla 'archivos'
+                    query_delete_archivo = 'DELETE FROM archivos WHERE clave = %s'
+                    cursor.execute(query_delete_archivo, (clave,))
+                    self.__connection.commit()
+
+                    # Eliminar los datos asociados en la tabla 'datos_csv' o 'datos_mat'
+                    if archivo[2] == 'CSV':
+                        query_delete_datos_csv = 'DELETE FROM datos_csv WHERE archivo_id = %s'
+                        cursor.execute(query_delete_datos_csv, (archivo[0],))
+                        self.__connection.commit()
+                    elif archivo[2] == 'MAT':
+                        query_delete_datos_mat = 'DELETE FROM datos_mat WHERE archivo_id = %s'
+                        cursor.execute(query_delete_datos_mat, (archivo[0],))
+                        self.__connection.commit()
+
+                return True  
+            else:
+                print("No se encontró el archivo con la clave especificada.")
+                return False
+        except Exception as e:
+            print(f"Error al eliminar archivo: {e}")
+            return False
+  
+class manejoUsuarios:
     def __init__(self):
         self.__username = ''
         self.__password = ''
@@ -137,3 +262,8 @@ class manejoUsuarios:
     
 class manejoArchivos:
     def __init__(self):
+                    return False
+
+class manejoArchivos:
+    def __init__(self):
+
