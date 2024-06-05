@@ -168,7 +168,7 @@ class newuser(QDialog):
         self.hide()  # Oculto la ventana actual (Ventana2)
         self.ventana1.show()
         
-        # Metodos de implementación de eventos de ratón, dado que la ventana es personalizada
+    # Metodos de implementación de eventos de ratón, dado que la ventana es personalizada
     def mousePressEvent(self, event): # Inicia el arrastre
         if event.buttons() == Qt.LeftButton:
             self.dragging = True # Se indica que está en modo de arrastre
@@ -308,9 +308,7 @@ class edituser(QDialog):
         self.cambio.hide()
         self.ingreso.show()
         
-
-        
-        # Metodos de implementación de eventos de ratón, dado que la ventana es personalizada
+    # Metodos de implementación de eventos de ratón, dado que la ventana es personalizada
     def mousePressEvent(self, event): # Inicia el arrastre
         if event.buttons() == Qt.LeftButton:
             self.dragging = True # Se indica que está en modo de arrastre
@@ -563,42 +561,8 @@ class programa(QDialog):
         self.patientTable.removeRow(row)
         
               
-#############################################################################################
-    
-    def cargar_mat(self):
-        ruta, _ = QFileDialog.getOpenFileName(self, 'Cargar archivo MAT', '', 'Archivos MAT (*.mat)')
-        if ruta:
-            clave, ok = QInputDialog.getText(self, 'Ingresar clave', 'Ingrese la clave con la que quiere asociar el objeto:')
-            if ok and clave:
-                try:
-                    archivo_id = self.Controller.insertarArchivoCont(clave, 'MAT', ruta)
-                    data = self.Controller.cargarMatCont(ruta)
-                    for key in data.keys():
-                        if key.startswith('__'):
-                            continue
-                        self.Controller.insertarDatosMatCont(archivo_id, key)
-                    QMessageBox.information(self, 'Éxito', f'Archivo MAT {clave} cargado exitosamente.')
-                except Exception as e:
-                    QMessageBox.critical(self, 'Error', f'Error al cargar archivo MAT: {e}')
-
-    def cargar_csv(self):
-        ruta, _ = QFileDialog.getOpenFileName(self, 'Cargar archivo CSV', '', 'Archivos CSV (*.csv)')
-        if ruta:
-            clave, ok = QInputDialog.getText(self, 'Ingresar clave', 'Ingrese la clave con la que quiere asociar el objeto:')
-            if ok and clave:
-                try:
-                    archivo_id = self.Controller.insertarArchivoCont(clave, 'CSV', ruta)
-                    datos = self.Controller.cargarCsvCont(ruta)
-                    for columna in datos.columns:
-                        self.Controller.insertarDatosCsvCont(archivo_id, columna)
-                    QMessageBox.information(self, 'Éxito', f'Archivo CSV {clave} cargado exitosamente.')
-                except Exception as e:
-                    QMessageBox.critical(self, 'Error', f'Error al cargar archivo CSV: {e}')
 
 
-
-
-#############################################################################################
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
