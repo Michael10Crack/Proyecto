@@ -27,7 +27,7 @@
    <property name="geometry">
     <rect>
      <x>520</x>
-     <y>10</y>
+     <y>70</y>
      <width>361</width>
      <height>301</height>
     </rect>
@@ -223,6 +223,70 @@ background-color: rgb(255, 255, 255);</string>
    </property>
    <property name="text">
     <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="minimizar">
+   <property name="geometry">
+    <rect>
+     <x>790</x>
+     <y>20</y>
+     <width>31</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+     <underline>false</underline>
+     <strikeout>false</strikeout>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+        background-color: #4CAF50;
+        border: none;
+        border-radius: 10px;;
+    }</string>
+   </property>
+   <property name="text">
+    <string>__</string>
+   </property>
+   <property name="autoExclusive">
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="exit">
+   <property name="geometry">
+    <rect>
+     <x>840</x>
+     <y>20</y>
+     <width>31</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+     <underline>false</underline>
+     <strikeout>false</strikeout>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+        background-color: orangered;
+        border: none;
+        border-radius: 10px;;
+    }</string>
+   </property>
+   <property name="text">
+    <string>X</string>
+   </property>
+   <property name="autoExclusive">
+    <bool>false</bool>
    </property>
   </widget>
  </widget>

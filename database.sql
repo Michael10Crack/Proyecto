@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-06-2024 a las 08:41:59
+-- Tiempo de generación: 05-06-2024 a las 12:16:27
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -34,6 +34,16 @@ CREATE TABLE `medicos` (
   `num_registro` int(20) NOT NULL,
   `especialidad` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `medicos`
+--
+
+INSERT INTO `medicos` (`nombre`, `apellido`, `edad`, `num_registro`, `especialidad`) VALUES
+('JOSE ALBERTO', 'HURTADO VARGAS', 54, 1010, 'NEUROLOGIA'),
+('ANDRES ', 'MARQUEZ ESCOBAR', 32, 8080, 'OTORRINOLARINGOLOGO'),
+('MARIA', 'VARGAS CONTRERAS', 28, 2324, 'CARDIOLOGIA'),
+('CATALINA', 'SANCHEZ VALVUENA', 22, 1090, 'NUTRICION');
 
 -- --------------------------------------------------------
 

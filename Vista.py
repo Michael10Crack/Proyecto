@@ -364,7 +364,7 @@ class programa(QDialog):
         self.editpac.clicked.connect(lambda: self.edicionespac.setCurrentIndex(2))
         self.erasepac.clicked.connect(lambda: self.edicionespac.setCurrentIndex(3))
         self.estudiospac.clicked.connect(lambda: self.edicionespac.setCurrentIndex(4))
-        self.pacientes_2.currentChanged.connect(self.update_widgets)
+        self.base.currentChanged.connect(self.update_widgets)
         
     def update_widgets(self, index):
         if index == 1:
@@ -472,6 +472,7 @@ class programa(QDialog):
         msgBox.setWindowTitle('Información')
         msgBox.setStandardButtons(QMessageBox.Ok)
         msgBox.exec()
+
     def mostrar_advertencia(self):
         # Mostrar una ventana emergente con un mensaje de advertencia
         msgBox = QMessageBox()
@@ -690,7 +691,6 @@ class VentanaEmergente(QDialog):
         self.edadline.setText(agepac)
         self.idline.setText(idpac)
         self.medicoline.setText(medpac)
-        
 
     def minimizator(self):
         self.showMinimized()
@@ -729,7 +729,6 @@ class VentanaEmergente(QDialog):
                 # desplazamiento del cursor desde el momento en que se inició el arrastre.
         except:
             pass
-
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
