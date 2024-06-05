@@ -390,7 +390,7 @@ class programa(QDialog):
             pass
         if index == 3:
             pass
-            # self.browse.clicked.connect(self.procesar_dicom)
+            # self.browse.clicked.connect(self.procesar_dicom) ES ESTE EL BOTÓN?
 
     def anadir(self):
         try:
@@ -400,7 +400,7 @@ class programa(QDialog):
         self.addpac.clicked.connect(self.ok)
 
 # Aquí se debe ver el botón ese pero no lo he puesto
-
+    # self.browse.clicked.connect(self.procesar_dicom) # ESTE ES EL BOTON DE BUSCAR
 
     def procesar_dicom(self):
         ruta_carpeta = QFileDialog.getExistingDirectory(self, 'Seleccionar carpeta con archivos DICOM', '')
@@ -413,16 +413,18 @@ class programa(QDialog):
                         # Procesar el archivo DICOM
                             manejador_dicom = manejodicom(dicom_data)
                             imagen_procesada = manejador_dicom.apply_modality_lut()
-                            
+                        
                         self.exito(ruta_carpeta)
                         
+                        self.mostrar_imagenes_dicom(imagen_procesada)
                     except pydicom.errors.InvalidDicomError:
                         # El archivo no es un archivo DICOM válido
                         self.mostrar_advertencia()
 
-    def mostrar_imagen_procesada(self, imagen_procesada):
-        # Aquí puedes mostrar la imagen procesada en una ventana emergente
-        pass
+    def mostrar_imagenes_dicom(self, imagen_procesada):
+        ventana = VentanaEmergente() #defino como la clase
+        ventana.mostrar_imagen_procesada(imagen_procesada) # 'plotear'
+        ventana.exec_() #mostrar la ventana
 
     def exito(self, ruta_carpeta):
         # Mostrar una ventana emergente con un mensaje de procesamiento exitoso
@@ -440,41 +442,7 @@ class programa(QDialog):
         msgBox.setWindowTitle('Advertencia')
         msgBox.setStandardButtons(QMessageBox.Ok)
         msgBox.exec()
-
-
-
-    # def browse(self):
-    #     options = QFileDialog.Options()
-    #     options |= QFileDialog.DontUseNativeDialog
-    #     ruta_archivo = QFileDialog.getOpenFileName(self, 'Buscar archivo DICOM', '', 'Archivos DICOM (*.dcm)')
-    #     if ruta_archivo:
-    #         try:
-    #             pydicom.dcmread(ruta_archivo)
-    #             # El archivo es un archivo DICOM válido
-    #             msgBox = QMessageBox()
-    #             msgBox.setIcon(QMessageBox.Information)
-    #             msgBox.setText(f'Archivo DICOM seleccionado: {ruta_archivo}')
-    #             msgBox.setWindowTitle('Información')
-    #             msgBox.setStandardButtons(QMessageBox.Ok)
-    #             msgBox.exec()
-            
-    #             manejador_dicom = manejodicom(ruta_archivo)
-    #             imagen_procesada = manejador_dicom.apply_modality_lut()
-
-    #         except pydicom.errors.InvalidDicomError:
-    #             # El archivo no es un archivo DICOM válido
-    #             msgBox = QMessageBox()
-    #             msgBox.setIcon(QMessageBox.Warning)
-    #             msgBox.setText("El archivo seleccionado no es un archivo DICOM válido.")
-    #             msgBox.setWindowTitle('Advertencia')
-    #             msgBox.setStandardButtons(QMessageBox.Ok)
-    #             msgBox.exec()
-
-            
-
-
-
-
+        
     def ok(self):
         namepac = self.namepac.text()
         lastnamepac = self.lastnamepac.text()
@@ -649,7 +617,24 @@ class programa(QDialog):
     def eliminar_paciente(self, row, identificacion):
         self.Controller.eliminarPacCont(identificacion)
         self.patientTable.removeRow(row)
-        
+
+class VentanaEmergente(QDialog):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
+        self.horizontalSlider.valueChanged.connect(self.actualizar_imagen) #configurar el slider
+    
+    def mostrar_imagen_procesada(self, imagen_procesada):
+        self.imagen_procesada = imagen_procesada
+        self.actualizar_imagen()
+
+    def actualizar_imagen(self):
+        indice = self.deslizador1.value()
+        # Obtener la imagen correspondiente al índice
+        imagen = self.imagen_procesada[indice]
+        #convertir a QPixmap para ver en el Qlabel
+        pixmap = QPixmap.fromImage(imagen)
+        self.label.setPixmap(pixmap)
 
 
 
