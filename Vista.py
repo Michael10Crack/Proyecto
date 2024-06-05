@@ -441,8 +441,8 @@ class programa(QDialog):
                         for file in archivos_dicom:
                             dicom_data = pydicom.dcmread(file)                        
                         # Procesar el archivo DICOM
-                            manejador_dicom = manejodicom(dicom_data)
-                            imagen_procesada = manejador_dicom.apply_modality_lut()
+                            manejador_dicom = self.Controller.manejodicompath(dicom_data)
+                            imagen_procesada = self.Controller.apply_modality_lut()
                         self.url = ruta_carpeta
                         self.exito(ruta_carpeta) 
                     except pydicom.errors.InvalidDicomError:
@@ -460,7 +460,7 @@ class programa(QDialog):
                             dicom_data = pydicom.dcmread(file)                        
                         # Procesar el archivo DICOM
                             manejador_dicom = self.Controller.manejodicompath(dicom_data)
-                            imagen_procesada = manejador_dicom.apply_modality_lut()
+                            imagen_procesada = self.Controller.apply_modality_lut()
                         self.mostrar_imagenes_dicom(imagen_procesada, namepac, lastnamepac, agepac, idpac, medpac)
                     except pydicom.errors.InvalidDicomError:
                         # El archivo no es un archivo DICOM válido
@@ -506,24 +506,25 @@ class programa(QDialog):
             msgBox.setWindowTitle('Campos incompletos')
             msgBox.setStandardButtons(QMessageBox.Ok)
             msgBox.exec()
-        bool = self.Controller.ingresarPacCont(namepac, lastnamepac, agepac, idpac, medpac, url)
-        if bool:
-            msgBox = QMessageBox()
-            msgBox.setIcon(QMessageBox.Warning)
-            msgBox.setText('Usuario ingresado exitosamente')
-            msgBox.setWindowTitle('Usuario ingresado')
-            msgBox.setStandardButtons(QMessageBox.Ok)
-            self.limpiar_campos_PacNuevo()
-            self.groupBox_10.hide()
-            msgBox.exec()
         else:
-            msgBox = QMessageBox()
-            msgBox.setIcon(QMessageBox.Warning)
-            msgBox.setText('Ya existe un usuario con el ID diligenciado.\nIngrese uno diferente.')
-            msgBox.setWindowTitle('Usuario existente')
-            msgBox.setStandardButtons(QMessageBox.Ok)
-            self.limpiar_campos_PacNuevo()
-            msgBox.exec()
+            bool = self.Controller.ingresarPacCont(namepac, lastnamepac, agepac, idpac, medpac, url)
+            if bool:
+                msgBox = QMessageBox()
+                msgBox.setIcon(QMessageBox.Warning)
+                msgBox.setText('Usuario ingresado exitosamente')
+                msgBox.setWindowTitle('Usuario ingresado')
+                msgBox.setStandardButtons(QMessageBox.Ok)
+                self.limpiar_campos_PacNuevo()
+                self.groupBox_10.hide()
+                msgBox.exec()
+            else:
+                msgBox = QMessageBox()
+                msgBox.setIcon(QMessageBox.Warning)
+                msgBox.setText('Ya existe un usuario con el ID diligenciado.\nIngrese uno diferente.')
+                msgBox.setWindowTitle('Usuario existente')
+                msgBox.setStandardButtons(QMessageBox.Ok)
+                self.limpiar_campos_PacNuevo()
+                msgBox.exec()
         
     def okPacEdit(self):
         nameedtpac = self.nameedtpac.text().upper()
@@ -543,24 +544,25 @@ class programa(QDialog):
             msgBox.setWindowTitle('Campos incompletos')
             msgBox.setStandardButtons(QMessageBox.Ok)
             msgBox.exec()
-        bool = self.Controller.editarPacCont(idpac_buscar, idedtpac, nameedtpac, lastnameedtpac, ageedtpac, medpac, url )
-        if bool:
-            msgBox = QMessageBox()
-            msgBox.setIcon(QMessageBox.Warning)
-            msgBox.setText('Usuario ingresado exitosamente')
-            msgBox.setWindowTitle('Usuario ingresado')
-            msgBox.setStandardButtons(QMessageBox.Ok)
-            self.limpiar_campos_PacEdit()
-            self.groupBox_10.hide()
-            msgBox.exec()
         else:
-            msgBox = QMessageBox()
-            msgBox.setIcon(QMessageBox.Warning)
-            msgBox.setText('Ya existe un usuario con el ID diligenciado.\nIngrese uno diferente.')
-            msgBox.setWindowTitle('Usuario existente')
-            msgBox.setStandardButtons(QMessageBox.Ok)
-            self.limpiar_campos_PacEdit()
-            msgBox.exec()
+            bool = self.Controller.editarPacCont(idpac_buscar, idedtpac, nameedtpac, lastnameedtpac, ageedtpac, medpac, url )
+            if bool:
+                msgBox = QMessageBox()
+                msgBox.setIcon(QMessageBox.Warning)
+                msgBox.setText('Usuario ingresado exitosamente')
+                msgBox.setWindowTitle('Usuario ingresado')
+                msgBox.setStandardButtons(QMessageBox.Ok)
+                self.limpiar_campos_PacEdit()
+                self.groupBox_10.hide()
+                msgBox.exec()
+            else:
+                msgBox = QMessageBox()
+                msgBox.setIcon(QMessageBox.Warning)
+                msgBox.setText('Ya existe un usuario con el ID diligenciado.\nIngrese uno diferente.')
+                msgBox.setWindowTitle('Usuario existente')
+                msgBox.setStandardButtons(QMessageBox.Ok)
+                self.limpiar_campos_PacEdit()
+                msgBox.exec()
 
     def limpiar_campos_PacNuevo(self):
         self.namepac.setText("")

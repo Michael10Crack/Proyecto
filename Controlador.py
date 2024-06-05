@@ -34,7 +34,10 @@ class controlador:
         return self.__acceso.modificar(usernameviejo, passwordviejo, username, password)
         
     def manejodicompath(self, path):
-        return self.__manejodicom.manejodicompath(path)
+        self.__manejodicom.dicom(path) 
+        
+    def apply_modality_lut(self):
+        return  self.__manejodicom.apply_modality_lut()
         
     
         
