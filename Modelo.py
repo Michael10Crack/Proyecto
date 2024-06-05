@@ -27,7 +27,9 @@ class BaseMySQL:
         if self.__connection:
             self.__connection.close()
             self.__connection = None
-    
+
+########## PACIENTES ###############
+
     def validarPac(self, identificacion:str):
         query = 'SELECT * FROM pacientes WHERE identificacion = %s'
         cursor = self.__connection.cursor()
@@ -36,10 +38,10 @@ class BaseMySQL:
         cursor.close()
         return len(results) == 0
             
-    def ingresarPac(self, namepac:str, lastnamepac:str, agepac:str, idpac:str, medpac:str,):
+    def ingresarPac(self, namepac:str, lastnamepac:str, agepac:str, idpac:str, medpac:str, url:str):
         if self.validarPac(idpac):
-            query = 'INSERT INTO pacientes (nombre, apellido, edad, identificacion, med_cabecera) VALUES (%s, %s, %s, %s, %s, %s)'
-            values = (namepac, lastnamepac, agepac, idpac, medpac)
+            query = 'INSERT INTO pacientes (nombre, apellido, edad, identificacion, med_cabecera, url) VALUES (%s, %s, %s, %s, %s, %s, %s)'
+            values = (namepac, lastnamepac, agepac, idpac, medpac, url)
             cursor = self.__connection.cursor()
             cursor.execute(query, values)
             self.__connection.commit()
@@ -58,28 +60,86 @@ class BaseMySQL:
             cursor.close()
             return True
     
-    def editarPac(self, idpac:str, nueva_id:str, namepac:str, lastnamepac:str, agepac:str, medpac:str):
+    def editarPac(self, idpac:str, nueva_id:str, namepac:str, lastnamepac:str, agepac:str, medpac:str, url:str):
         # Verificar si la nueva ID ya existe
         if not self.validarPac(nueva_id):
             return False
         cursor = self.__connection.cursor()
-        sql = "UPDATE pacientes SET identificacion = %s, nombre = %s, apellido = %s, edad = %s, med_cabecera = %s WHERE identificacion = %s"
-        val = (nueva_id, namepac, lastnamepac, agepac, medpac, idpac)
+        sql = "UPDATE pacientes SET identificacion = %s, nombre = %s, apellido = %s, edad = %s, med_cabecera = %s, url = %s WHERE identificacion = %s"
+        val = (nueva_id, namepac, lastnamepac, agepac, medpac, url, idpac)
         cursor.execute(sql, val)
         self.__connection.commit()
         cursor.close()
         return True
 
-    def nombre_com(self):
+    def lista_medicos(self):
+        nombres_completos = []
         cursor = self.__connection.cursor()
         cursor.execute("SELECT CONCAT(nombre, ' ', apellido) FROM medicos ORDER BY nombre, apellido")
         resultados = cursor.fetchall()
-        self.nombres_completos = [nombre[0] for nombre in resultados]
+        nombres_completos = [nombre[0] for nombre in resultados]
         cursor.close()
-        return 
+        return nombres_completos
 
+    def paciente(self, identificacion:str):
+        query = 'SELECT * FROM pacientes WHERE identificacion = %s'
+        cursor = self.__connection.cursor()
+        cursor.execute(query, (identificacion,))
+        paciente = cursor.fetchone()
+        cursor.close()
+        namepac, lastnamepac, agepac, idpac, medpac, url, = self.paciente_variables(paciente)
+        return namepac, lastnamepac, agepac, idpac, medpac, url
 
-  
+    def paciente_variables(tupla):
+        if tupla:
+            return tupla  # Si la tupla no está vacía, simplemente devuélvela
+        else:
+            return None  # Si la tupla está vacía, devuelve None
+
+########## MEDICOS ###############
+
+    def validarMed(self, identificacion:str):
+        query = 'SELECT * FROM medicos WHERE identificacion = %s'
+        cursor = self.__connection.cursor()
+        cursor.execute(query, (identificacion,))
+        results = cursor.fetchall()
+        cursor.close()
+        return len(results) == 0
+            
+    def ingresarMed(self, namemed:str, lastnamemed:str, agemed:str, num_registro:str, esp:str):
+        if self.validarPac(num_registro):
+            query = 'INSERT INTO medicos (nombre, apellido, edad, num_registro, especialidad) VALUES (%s, %s, %s, %s, %s, %s)'
+            values = (namemed, lastnamemed, agemed, num_registro, esp)
+            cursor = self.__connection.cursor()
+            cursor.execute(query, values)
+            self.__connection.commit()
+            cursor.close()
+            return True
+        return False
+        
+    def eliminarMed(self, idmed:str):
+        if self.validarPac(idmed) == None:
+            return False
+        else:             
+            query = 'DELETE FROM medicos WHERE identificacion = %s'
+            cursor = self.__connection.cursor()
+            cursor.execute(query, (idmed,))
+            self.__connection.commit()
+            cursor.close()
+            return True
+    
+    def editarMed(self, idmedc:str, nueva_id:str, namemed:str, lastnamemed:str, agemed:str, num_registro:str, esp:str):
+        # Verificar si la nueva ID ya existe
+        if not self.validarPac(nueva_id):
+            return False
+        cursor = self.__connection.cursor()
+        sql = "UPDATE medicos SET identificacion = %s, nombre = %s, apellido = %s, edad = %s, num_registro = %s, especialidad = %s WHERE identificacion = %s"
+        val = (nueva_id, namemed, lastnamemed, agemed, num_registro, esp, idmedc)
+        cursor.execute(sql, val)
+        self.__connection.commit()
+        cursor.close()
+        return True
+
 class manejoUsuarios:
     def __init__(self):
         self.__username = ''
@@ -171,20 +231,3 @@ class manejodicom:
         return QImage(imagen, imagen.shape[1], imagen.shape[0], QImage.Format_Grayscale8)
     #convertimos la imagen a QImage para verla en la ventana 
     #-pixeles-ancho(columnas)-altura(filas)-escala de grises
-
-    # def get_info_paciente(self):
-    #     dm = self.dicom
-    #     nombre = dm.get('PatientName', 'Desconocido')
-    #     id_paciente = dm.get('PatientID', 'Desconocido')
-    #     edad = dm.get('PatientAge', 'Desconocida')
-    #     identificacion = dm.get('identificacion', 'Desconocido')
-    #     med_cabecera = dm.get('med_cabecera', 'Desconocido')
-    #     return nombre, id_paciente, edad, identificacion, med_cabecera
-    
-    # def insert_patient_data(self):
-    #     patient_info = self.get_info_paciente()
-    #     insertarinfo = 'INSERT INTO pacientes(nombre, apellido, edad, identifiacion, med_cabecera) VALUES (%s, %s, %s, %s, %s, %s)'
-    #     cursor.execute(insertarinfo, patient_info)
-    #     conexion.commit()
-
-

@@ -9,15 +9,18 @@ class controlador:
     def desconectar(self):
         self.__controlador.desconectar()
     
-    def ingresarPacCont(self, nombre:str, apellido:str, edad:str, identificacion:str):
-        bool = self.__controlador.ingresarPac(nombre, apellido, edad, identificacion)
-        return bool
-    
-    def listaPacCont(self, nombre):
-        return self.__controlador.buscar(nombre)
-    
+    def ingresarPacCont(self, namepac:str, lastnamepac:str, agepac:str, idpac:str, medpac:str, url:str):
+        return self.__controlador.ingresarPac(namepac, lastnamepac, agepac, idpac, medpac, url)
+        
     def eliminarPacCont(self, identificacion:str):
         return self.__controlador.eliminarPac(identificacion)
+    
+    def editarPacCont(self, idpac:str, nueva_id:str, namepac:str, lastnamepac:str, agepac:str, medpac:str, url:str):
+        return self.__controlador.editarPac(idpac, nueva_id, namepac, lastnamepac, agepac, medpac, url)
+    
+    
+
+
 
         
     def ingresoCont(self, username:str, password:str):
