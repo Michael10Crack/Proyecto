@@ -5,9 +5,7 @@ from PyQt5.QtGui import QRegExpValidator, QIntValidator
 from PyQt5.QtCore import Qt,QRegExp
 from PyQt5.uic import loadUi
 import matplotlib.pyplot as plt
-import numpy as np 
-import scipy.io as sio
-#############################################################################################
+
 
 class ventanaLogin(QDialog):
     def __init__(self):
@@ -87,8 +85,7 @@ class ventanaLogin(QDialog):
                 # desplazamiento del cursor desde el momento en que se inició el arrastre.
         except:
             pass
-
-          
+      
 class newuser(QDialog):
     def __init__(self, ventana1):
         super().__init__()
@@ -136,7 +133,7 @@ class newuser(QDialog):
             msgBox.setStandardButtons(QMessageBox.Ok)
             msgBox.exec()
         if password == password_2:
-            bool = self.Controller.nuevousuarioCont(username, password)
+            bool = self.Controller.nuevoUsuarioCont(username, password)
             if bool:
                 msgBox = QMessageBox()
                 msgBox.setIcon(QMessageBox.Warning)
@@ -275,7 +272,7 @@ class edituser(QDialog):
             msgBox.exec()
             return
         if password_1 == password_2:
-            bool = self.Controller.modificarCont(usernameviejo, passwordnuevo, username, password_1)
+            bool = self.Controller.modificarUsuarioCont(usernameviejo, passwordnuevo, username, password_1)
             if bool:
                 msgBox = QMessageBox()
                 msgBox.setIcon(QMessageBox.Warning)
@@ -597,11 +594,6 @@ class programa(QDialog):
                     QMessageBox.information(self, 'Éxito', f'Archivo CSV {clave} cargado exitosamente.')
                 except Exception as e:
                     QMessageBox.critical(self, 'Error', f'Error al cargar archivo CSV: {e}')
-
-
-
-
-#############################################################################################
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

@@ -5,8 +5,6 @@ class controlador:
     def __init__(self, controlador = BaseMySQL(), acceso = manejoUsuarios()):
         self.__controlador = controlador
         self.__acceso = acceso
-        
-        ####
     
     def conectarCont(self, username:str, password:str):
         bool = self.__controlador.conectar(username, password)         
@@ -22,7 +20,7 @@ class controlador:
     def eliminarPacCont(self, identificacion:str):
         return self.__controlador.eliminarPac(identificacion)
 
-        ####################################
+######################################
 
     def insertarArchivoCont(self, clave, tipo, ruta):
         return self.__controlador.insertarArchivo(clave, tipo, ruta)
@@ -53,15 +51,15 @@ class controlador:
         msgBox.setStandardButtons(QMessageBox.Ok)
         msgBox.exec_()
     
-        ####################################
+######################################
         
     def ingresoCont(self, username:str, password:str):
         return self.__acceso.ingreso(username, password)
     
-    def nuevousuarioCont(self, username:str, password:str):
+    def nuevoUsuarioCont(self, username:str, password:str):
         return self.__acceso.nuevousuario(username, password)
     
-    def modificarCont(self, usernameviejo:str, passwordviejo:str, username:str, password:str):
+    def modificarUsuarioCont(self, usernameviejo:str, passwordviejo:str, username:str, password:str):
         return self.__acceso.modificar(usernameviejo, passwordviejo, username, password)
         
     

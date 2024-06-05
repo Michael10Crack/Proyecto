@@ -190,10 +190,8 @@ class BaseMySQL:
         except Exception as e:
             print(f"Error al eliminar archivo: {e}")
             return False
-
-
-    
-class manejoUsuarios():
+  
+class manejoUsuarios:
     def __init__(self):
         self.__username = ''
         self.__password = ''
@@ -261,7 +259,6 @@ class manejoUsuarios():
                 else:
                     return False
 
-        
-    
-                        
+class manejoArchivos:
+    def __init__(self):
 
