@@ -6,9 +6,8 @@ class controlador:
         self.__controlador = controlador
         self.__acceso = acceso
     
-    def conectarCont(self, username:str, password:str):
-        bool = self.__controlador.conectar(username, password)         
-        return bool
+    def desconectar(self):
+        self.__controlador.desconectar()
     
     def ingresarPacCont(self, nombre:str, apellido:str, edad:str, identificacion:str):
         bool = self.__controlador.ingresarPac(nombre, apellido, edad, identificacion)

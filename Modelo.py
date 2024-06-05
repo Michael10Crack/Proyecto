@@ -18,12 +18,11 @@ class BaseMySQL:
             password = self.__password,
             database = self.__database
         )
+
     def desconectar(self):
         if self.__connection:
             self.__connection.close()
             self.__connection = None
-            return True
-        return False
     
     def validarPac(self, identificacion:str):
         query = 'SELECT * FROM pacientes WHERE identificacion = %s'
@@ -140,3 +139,4 @@ class manejoUsuarios:
 class manejoArchivos:
     def __init__(self):
                     return False
+

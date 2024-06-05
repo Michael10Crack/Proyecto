@@ -34,6 +34,7 @@ class ventanaLogin(QDialog):
         self.showMinimized()     
         
     def salir(self):
+        self.Controller.desconectar()
         QApplication.quit()  
 
     def login(self):
@@ -112,6 +113,7 @@ class newuser(QDialog):
         self.showMinimized()
         
     def salir(self):
+        self.Controller.desconectar()
         QApplication.quit()  
   
     def anadir(self):
@@ -218,6 +220,7 @@ class edituser(QDialog):
         self.showMinimized()
         
     def salir(self):
+        self.Controller.desconectar()
         QApplication.quit()  
 
     def desconect(self):
@@ -348,6 +351,7 @@ class programa(QDialog):
         self.showMinimized()
         
     def salir(self):
+        self.Controller.desconectar()
         QApplication.quit()
         
     def hola(self):
@@ -371,6 +375,14 @@ class programa(QDialog):
             self.addpac.clicked.connect(self.anadir)
             self.cancelpac.clicked.connect(self.volver)
         if index == 1:
+            regex = r'^[a-zA-Z0-9]+$'
+            validator = QRegExpValidator(QRegExp(regex))
+            self.namepac.setValidator(validator)
+            self.lastnamepac.setValidator(validator)
+            self.age.setValidator(QIntValidator())
+            self.idpac.setValidator(validator)
+            self.addpac.clicked.connect(self.anadir)
+            self.cancelpac.clicked.connect(self.volver)
             pass
         if index == 2:
             pass
