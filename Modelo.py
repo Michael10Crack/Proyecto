@@ -1,12 +1,6 @@
 import mysql.connector
 import json
-import pandas as pd
-import scipy.io as sio
-import numpy as np
-from pydicom.pixel_data_handlers.util import apply_modality_lut
-import pydicom
-from PyQt5.QtGui import QImage
-#
+
 class BaseMySQL:
     def __init__(self):
         self.__host = 'localhost'
@@ -205,29 +199,3 @@ class manejoUsuarios:
                     return True
                 else:
                     return False    
-
-#me conecto desde fuera para facilidad                
-server = 'localhost'
-username = 'admin123'
-Password = 'contrasena123'
-database = 'database'
-
-conexion = mysql.connector.connect(user=username , password=Password, host=server , database=database)
-
-cursor = conexion.cursor()
-class manejodicom:
-    def __init__(self,path):
-        self.dicom = pydicom.dcmread(self.path)
-        self.path = path
-
-    def apply_modality_lut(self): #funcion para hacer más visible/clara la imagen (contraste,brillo...)
-        dm = self.dicom
-        imagen = apply_modality_lut(dm.pixel_array, dm)
-
-        if imagen.dtype != np.uint8: #normalicemos la imagen 
-            imagen = (np.maximum(imagen, 0) / imagen.max()) * 255.0 
-            imagen = np.uint8(imagen) #formato final np.uint8
-
-        return QImage(imagen, imagen.shape[1], imagen.shape[0], QImage.Format_Grayscale8)
-    #convertimos la imagen a QImage para verla en la ventana 
-    #-pixeles-ancho(columnas)-altura(filas)-escala de grises

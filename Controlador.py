@@ -1,5 +1,4 @@
 from Modelo import *
-from PyQt5.QtWidgets import QMessageBox
 
 class controlador:
     def __init__(self, controlador = BaseMySQL(), acceso = manejoUsuarios()):
@@ -17,11 +16,6 @@ class controlador:
     
     def editarPacCont(self, idpac:str, nueva_id:str, namepac:str, lastnamepac:str, agepac:str, medpac:str, url:str):
         return self.__controlador.editarPac(idpac, nueva_id, namepac, lastnamepac, agepac, medpac, url)
-    
-    
-
-
-
         
     def ingresoCont(self, username:str, password:str):
         return self.__acceso.ingreso(username, password)

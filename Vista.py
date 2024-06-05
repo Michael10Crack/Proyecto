@@ -1,10 +1,12 @@
 import sys 
+import pydicom
+import os
 from Controlador import *
-from PyQt5.QtWidgets import QApplication, QDialog, QMessageBox, QLineEdit, QTableWidgetItem, QPushButton, QTableWidget, QFileDialog, QInputDialog 
+from PyQt5.QtWidgets import QApplication, QDialog, QMessageBox, QLineEdit, QFileDialog
 from PyQt5.QtGui import QRegExpValidator, QIntValidator, QPixmap
 from PyQt5.QtCore import Qt,QRegExp
 from PyQt5.uic import loadUi
-import os
+
 
 
 class ventanaLogin(QDialog):
@@ -356,9 +358,12 @@ class programa(QDialog):
         QApplication.quit()
         
     def hola(self):
+        self.edicionespac.hide()
         self.base.setCurrentIndex(0)     
     
     def holapac(self):
+        self.base.setCurrentIndex(1) 
+        self.edicionespac.show()
         self.edicionespac.setCurrentIndex(0)
         self.newpac.clicked.connect(lambda: self.edicionespac.setCurrentIndex(1))
         self.editpac.clicked.connect(lambda: self.edicionespac.setCurrentIndex(2))
