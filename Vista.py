@@ -358,14 +358,14 @@ class programa(QDialog):
         self.base.setCurrentIndex(0)     
     
     def holapac(self):
-        self.newpac.clicked.connect(lambda: self.edicionespac.setCurrentIndex(0))
-        self.editpac.clicked.connect(lambda: self.edicionespac.setCurrentIndex(1))
-        self.erasepac.clicked.connect(lambda: self.edicionespac.setCurrentIndex(2))
-        self.estudiospac.clicked.connect(lambda: self.edicionespac.setCurrentIndex(3))
+        self.newpac.clicked.connect(lambda: self.edicionespac.setCurrentIndex(1))
+        self.editpac.clicked.connect(lambda: self.edicionespac.setCurrentIndex(2))
+        self.erasepac.clicked.connect(lambda: self.edicionespac.setCurrentIndex(3))
+        self.estudiospac.clicked.connect(self.funcion())##############################
         self.pacientes_2.currentChanged.connect(self.update_widgets)
         
     def update_widgets(self, index):
-        if index == 0:
+        if index == 1:
             regex = r'^[a-zA-Z0-9]+$'
             validator = QRegExpValidator(QRegExp(regex))
             self.namepac.setValidator(validator)
@@ -374,7 +374,8 @@ class programa(QDialog):
             self.idpac.setValidator(validator)
             self.addpac.clicked.connect(self.anadir)
             self.cancelpac.clicked.connect(self.volver)
-        if index == 1:
+            self.browse.clicked.connect(self.procesar_dicom)
+        if index == 2:
             regex = r'^[a-zA-Z0-9]+$'
             validator = QRegExpValidator(QRegExp(regex))
             self.idpac_buscar.setValidator(validator)
@@ -385,12 +386,13 @@ class programa(QDialog):
             self.desplegedtmed.setValidator(validator)
             self.addpac.clicked.connect(self.anadir)
             self.cancelpac.clicked.connect(self.volver)
-            pass
-        if index == 2:
+            self.cargaedtpac.clicked.connect(self.procesar_dicom)
             pass
         if index == 3:
             pass
-            # self.browse.clicked.connect(self.procesar_dicom) ES ESTE EL BOTÓN?
+        if index == 4:
+            pass
+            # self.browse.clicked.connect(self.procesar_dicom)
 
     def anadir(self):
         try:
@@ -414,15 +416,16 @@ class programa(QDialog):
                             manejador_dicom = manejodicom(dicom_data)
                             imagen_procesada = manejador_dicom.apply_modality_lut()
                         
-                        self.exito(ruta_carpeta)
+                        # self.exito(ruta_carpeta)
                         
                         self.mostrar_imagenes_dicom(imagen_procesada)
                     except pydicom.errors.InvalidDicomError:
                         # El archivo no es un archivo DICOM válido
-                        self.mostrar_advertencia()
+                        # self.mostrar_advertencia()
+                        pass
 
     def mostrar_imagenes_dicom(self, imagen_procesada):
-        ventana = VentanaEmergente() #defino como la clase
+        ventana = VentanaEmergente() #la defino como la clase
         ventana.mostrar_imagen_procesada(imagen_procesada) # 'plotear'
         ventana.exec_() #mostrar la ventana
 

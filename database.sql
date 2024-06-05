@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-06-2024 a las 02:08:11
+-- Tiempo de generación: 05-06-2024 a las 08:41:59
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -46,22 +46,23 @@ CREATE TABLE `pacientes` (
   `apellido` varchar(50) NOT NULL,
   `edad` varchar(3) NOT NULL,
   `identificacion` varchar(20) NOT NULL,
-  `med_cabecera` varchar(255) NOT NULL
+  `med_cabecera` varchar(255) NOT NULL,
+  `url` varchar(10000) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `pacientes`
 --
 
-INSERT INTO `pacientes` (`nombre`, `apellido`, `edad`, `identificacion`, `med_cabecera`) VALUES
-('MICHAEL', 'SALAZAR', '21', '1001456812', ''),
-('ESTEBAN', 'ARTUNDUAGA', '22', '123', ''),
-('LIONEL ANDRES', 'MESSI', '34', '10', ''),
-('JOSUE', 'PANIAGUA', '21', '789', ''),
-('MICHAEL DAVID', 'SALAZAR', '23', '9090', ''),
-('PUEDE', 'SER', '45', '456788', ''),
-('', '', '', '', ''),
-('HOLLA', 'SALUD', '34', '0880', '');
+INSERT INTO `pacientes` (`nombre`, `apellido`, `edad`, `identificacion`, `med_cabecera`, `url`) VALUES
+('MICHAEL', 'SALAZAR', '21', '1001456812', '', ''),
+('ESTEBAN', 'ARTUNDUAGA', '22', '123', '', ''),
+('LIONEL ANDRES', 'MESSI', '34', '10', '', ''),
+('JOSUE', 'PANIAGUA', '21', '789', '', ''),
+('MICHAEL DAVID', 'SALAZAR', '23', '9090', '', ''),
+('PUEDE', 'SER', '45', '456788', '', ''),
+('', '', '', '', '', ''),
+('HOLLA', 'SALUD', '34', '0880', '', '');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -48,9 +48,13 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="lineEdit_6">
+       <widget class="QLineEdit" name="nombreline">
         <property name="enabled">
          <bool>false</bool>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">
+background-color: rgb(255, 255, 255);</string>
         </property>
        </widget>
       </item>
@@ -71,9 +75,15 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="lineEdit_8">
+       <widget class="QLineEdit" name="apellidoline">
         <property name="enabled">
          <bool>false</bool>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(255, 255, 255);</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
         </property>
        </widget>
       </item>
@@ -94,9 +104,12 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="lineEdit_7">
+       <widget class="QLineEdit" name="edadline">
         <property name="enabled">
          <bool>false</bool>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(255, 255, 255);</string>
         </property>
        </widget>
       </item>
@@ -117,9 +130,12 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="lineEdit_9">
+       <widget class="QLineEdit" name="idline">
         <property name="enabled">
          <bool>false</bool>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(255, 255, 255);</string>
         </property>
        </widget>
       </item>
@@ -140,9 +156,12 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="lineEdit_10">
+       <widget class="QLineEdit" name="medicoline">
         <property name="enabled">
          <bool>false</bool>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(255, 255, 255);</string>
         </property>
        </widget>
       </item>
