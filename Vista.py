@@ -497,10 +497,13 @@ class programa(QDialog):
                         self.cargaedtpac.setText("ARCHIVO CARGADO")
                     except pydicom.errors.InvalidDicomError:
                         # El archivo no es un archivo DICOM válido
-                        self.mostrar_advertencia()
+                        self.mostrar_advertencia(file)
                         self.lista_med()
                         pass
-
+            else:
+                self.mostrar_advertencia2()
+                self.lista_med()
+                
     def okPacNuevo(self):
         namepac = self.namepac.text().upper()
         lastnamepac = self.lastnamepac.text().upper()
@@ -719,11 +722,11 @@ class programa(QDialog):
             msgBox.exec()
         else:
             namepac, lastnamepac, agepac, idpac, medpac, url = self.Controller.pacienteCon(idpac_estudio)
-            self.idpac_estudio.setText("")
             self.verEstudio = VisualizadorDICOM()  # Reinstanciar la ventana para cada paciente
             self.verEstudio.setup()
             self.verEstudio.initUI(url)
             self.verEstudio.setup2(namepac, lastnamepac, agepac, idpac, medpac)
+            self.idpac_estudio.setText("")
             self.verEstudio.show()
         
     def exito(self, ruta_carpeta):
@@ -732,6 +735,24 @@ class programa(QDialog):
         msgBox.setIcon(QMessageBox.Information)
         msgBox.setText(f'Carpeta DICOM seleccionada: {ruta_carpeta}')
         msgBox.setWindowTitle('Información')
+        msgBox.setStandardButtons(QMessageBox.Ok)
+        msgBox.exec()
+
+    def mostrar_advertencia(self, file):
+        # Mostrar una ventana emergente con un mensaje de advertencia
+        msgBox = QMessageBox()
+        msgBox.setIcon(QMessageBox.Warning)
+        msgBox.setText(f"Error al procesar la imagenen {file}.")
+        msgBox.setWindowTitle('Advertencia')
+        msgBox.setStandardButtons(QMessageBox.Ok)
+        msgBox.exec()
+
+    def mostrar_advertencia2(self):
+        # Mostrar una ventana emergente con un mensaje de advertencia
+        msgBox = QMessageBox()
+        msgBox.setIcon(QMessageBox.Warning)
+        msgBox.setText("La carpeta seleccionada no contiene archivos DICOM")
+        msgBox.setWindowTitle('Advertencia')
         msgBox.setStandardButtons(QMessageBox.Ok)
         msgBox.exec()
 
@@ -977,8 +998,8 @@ class programa(QDialog):
             pass
 
 class VisualizadorDICOM(QDialog):
-    def _init_(self):
-        super()._init_()
+    def init(self):
+        super().init()
         self.ruta_carpeta = None
         self.archivos_dicom = []
         self.indice_actual = 0
@@ -987,8 +1008,9 @@ class VisualizadorDICOM(QDialog):
         self.setup()
 
     def setup(self):
-        loadUi("imagenes_dicom.ui", self)
+    
         self.Controller = controlador()
+        loadUi("imagenes_dicom.ui", self)
         self.label = self.findChild(QLabel, "label")
         self.frame_principal = self.findChild(QFrame, "frame_principal")
         self.btn_minimizar = self.findChild(QPushButton, "minimizar")
@@ -1000,7 +1022,6 @@ class VisualizadorDICOM(QDialog):
         self.layout_principal = QVBoxLayout(self)
         self.layout_principal.addWidget(self.frame_principal)
         self.setLayout(self.layout_principal)
-        
 
         # Conectar los eventos
         self.btn_minimizar.clicked.connect(self.minimizator)
@@ -1022,8 +1043,8 @@ class VisualizadorDICOM(QDialog):
         self.showMinimized()
     
     def salir(self):
-        self.close()
-    
+        self.hide()
+
     def initUI(self, ruta):
         self.ruta_carpeta = ruta
         self.archivos_dicom = [os.path.join(ruta, file) for file in os.listdir(ruta) if file.endswith('.dcm')]
@@ -1070,7 +1091,26 @@ class VisualizadorDICOM(QDialog):
     def slider_moved(self, value):
         self.indice_actual = value
         self.mostrar_siguiente_imagen()
-        
+    
+        # Metodos de implementación de eventos de ratón, dado que la ventana es personalizada
+    def mousePressEvent(self, event): # Inicia el arrastre
+        if event.buttons() == Qt.LeftButton:
+            self.dragging = True # Se indica que está en modo de arrastre
+            self.offset = event.pos() # Guardo la posición
+
+    def mouseReleaseEvent(self, event): # Termina el arrastre.
+        if event.button() == Qt.LeftButton:
+            self.dragging = False # Arraste terminado 
+            
+    def mouseMoveEvent(self, event): # Calcula y realiza el movimiento del widget durante el arrastre.
+        try:
+            if self.dragging:
+                self.move(self.mapToGlobal(event.pos() - self.offset)) 
+                # Mueve el widget a la nueva posición calculada en función del 
+                # desplazamiento del cursor desde el momento en que se inició el arrastre.
+        except:
+            pass
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     login = ventanaLogin()

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-06-2024 a las 12:16:27
+-- Tiempo de generación: 06-06-2024 a las 18:29:37
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -41,9 +41,10 @@ CREATE TABLE `medicos` (
 
 INSERT INTO `medicos` (`nombre`, `apellido`, `edad`, `num_registro`, `especialidad`) VALUES
 ('JOSE ALBERTO', 'HURTADO VARGAS', 54, 1010, 'NEUROLOGIA'),
-('ANDRES ', 'MARQUEZ ESCOBAR', 32, 8080, 'OTORRINOLARINGOLOGO'),
+('CATALINA', 'SANCHEZ VALVUENA', 22, 1090, 'NUTRICION'),
 ('MARIA', 'VARGAS CONTRERAS', 28, 2324, 'CARDIOLOGIA'),
-('CATALINA', 'SANCHEZ VALVUENA', 22, 1090, 'NUTRICION');
+('SDFSDFKM', 'FSDKLNFSD', 6546, 5436, 'DSFJKFDSN'),
+('ANDRES ', 'MARQUEZ ESCOBAR', 32, 8080, 'OTORRINOLARINGOLOGO');
 
 -- --------------------------------------------------------
 
@@ -56,8 +57,8 @@ CREATE TABLE `pacientes` (
   `apellido` varchar(50) NOT NULL,
   `edad` varchar(3) NOT NULL,
   `identificacion` varchar(20) NOT NULL,
-  `med_cabecera` varchar(255) NOT NULL,
-  `url` varchar(10000) NOT NULL
+  `med_cabecera` mediumtext NOT NULL,
+  `url` mediumtext NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -65,14 +66,27 @@ CREATE TABLE `pacientes` (
 --
 
 INSERT INTO `pacientes` (`nombre`, `apellido`, `edad`, `identificacion`, `med_cabecera`, `url`) VALUES
-('MICHAEL', 'SALAZAR', '21', '1001456812', '', ''),
-('ESTEBAN', 'ARTUNDUAGA', '22', '123', '', ''),
-('LIONEL ANDRES', 'MESSI', '34', '10', '', ''),
-('JOSUE', 'PANIAGUA', '21', '789', '', ''),
-('MICHAEL DAVID', 'SALAZAR', '23', '9090', '', ''),
-('PUEDE', 'SER', '45', '456788', '', ''),
-('', '', '', '', '', ''),
-('HOLLA', 'SALUD', '34', '0880', '', '');
+('PEDRO', 'PEREZ', '54', '56956877', 'MARIA VARGAS CONTRERAS', 'Archivos_Dicom/601.000000-T2 TSE cor-19169'),
+('LUNA', 'RIOS', '654', '5985694', 'CATALINA SANCHEZ VALVUENA', 'Archivos_Dicom/601.000000-T2 TSE cor-19169'),
+('JAIME', 'ALTOZANO', '58', '6448748', 'MARIA VARGAS CONTRERAS', 'Archivos_Dicom/601.000000-T2 TSE cor-19169'),
+('MATEO', 'ASPRILLA', '10', '66974589', 'JOSE ALBERTO HURTADO VARGAS', 'Archivos_Dicom/701.000000-T2 TSE sag-64102'),
+('JAIRO', 'REYES', '554', '798949145', 'JOSE ALBERTO HURTADO VARGAS', 'Archivos_Dicom/601.000000-T2 TSE cor-19169');
+
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `medicos`
+--
+ALTER TABLE `medicos`
+  ADD PRIMARY KEY (`num_registro`);
+
+--
+-- Indices de la tabla `pacientes`
+--
+ALTER TABLE `pacientes`
+  ADD PRIMARY KEY (`identificacion`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
