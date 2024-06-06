@@ -36,8 +36,11 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">
-background-color: rgb(176, 180, 255);</string>
+    <string notr="true">#frame {
+	background-color: rgb(176, 180, 255);
+	border-radius: 10px;
+}
+</string>
    </property>
    <property name="frameShape">
     <enum>QFrame::StyledPanel</enum>
@@ -202,10 +205,10 @@ background-color: rgb(176, 180, 255);</string>
    <widget class="QPushButton" name="adelante">
     <property name="geometry">
      <rect>
-      <x>390</x>
-      <y>500</y>
-      <width>75</width>
-      <height>23</height>
+      <x>506</x>
+      <y>490</y>
+      <width>100</width>
+      <height>30</height>
      </rect>
     </property>
     <property name="cursor">
@@ -240,12 +243,20 @@ background-color: rgb(176, 180, 255);</string>
          <property name="text">
           <string>NOMBRE:                    </string>
          </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
         </widget>
        </item>
        <item>
         <widget class="QLineEdit" name="nombreline">
          <property name="enabled">
           <bool>false</bool>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>11</pointsize>
+          </font>
          </property>
          <property name="cursor">
           <cursorShape>ArrowCursor</cursorShape>
@@ -269,12 +280,20 @@ background-color: rgb(176, 180, 255);</string>
          <property name="text">
           <string>APELLIDO:                   </string>
          </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
         </widget>
        </item>
        <item>
         <widget class="QLineEdit" name="apellidoline">
          <property name="enabled">
           <bool>false</bool>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>11</pointsize>
+          </font>
          </property>
          <property name="cursor">
           <cursorShape>ArrowCursor</cursorShape>
@@ -298,12 +317,20 @@ background-color: rgb(176, 180, 255);</string>
          <property name="text">
           <string>EDAD:                         </string>
          </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
         </widget>
        </item>
        <item>
         <widget class="QLineEdit" name="edadline">
          <property name="enabled">
           <bool>false</bool>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>11</pointsize>
+          </font>
          </property>
          <property name="cursor">
           <cursorShape>ArrowCursor</cursorShape>
@@ -325,7 +352,10 @@ background-color: rgb(176, 180, 255);</string>
           </font>
          </property>
          <property name="text">
-          <string>ID:                             </string>
+          <string>ID:                               </string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
         </widget>
        </item>
@@ -333,6 +363,11 @@ background-color: rgb(176, 180, 255);</string>
         <widget class="QLineEdit" name="idline">
          <property name="enabled">
           <bool>false</bool>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>11</pointsize>
+          </font>
          </property>
          <property name="cursor">
           <cursorShape>ArrowCursor</cursorShape>
@@ -356,12 +391,20 @@ background-color: rgb(176, 180, 255);</string>
          <property name="text">
           <string>MÉDICO DE CABECERA:</string>
          </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
         </widget>
        </item>
        <item>
         <widget class="QLineEdit" name="medicoline">
          <property name="enabled">
           <bool>false</bool>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>11</pointsize>
+          </font>
          </property>
          <property name="cursor">
           <cursorShape>ArrowCursor</cursorShape>
@@ -435,10 +478,10 @@ background-color: rgb(176, 180, 255);</string>
    <widget class="QPushButton" name="atras">
     <property name="geometry">
      <rect>
-      <x>300</x>
-      <y>500</y>
-      <width>75</width>
-      <height>23</height>
+      <x>350</x>
+      <y>490</y>
+      <width>100</width>
+      <height>30</height>
      </rect>
     </property>
     <property name="cursor">

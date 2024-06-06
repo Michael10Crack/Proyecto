@@ -105,7 +105,7 @@ class BaseMySQL:
             
     def ingresarMed(self, namemed:str, lastnamemed:str, agemed:str, num_registro:str, esp:str):
         if self.validarPac(num_registro):
-            query = 'INSERT INTO medicos (nombre, apellido, edad, num_registro, especialidad) VALUES (%s, %s, %s, %s, %s, %s)'
+            query = 'INSERT INTO medicos (nombre, apellido, edad, num_registro, especialidad) VALUES (%s, %s, %s, %s, %s)'
             values = (namemed, lastnamemed, agemed, num_registro, esp)
             cursor = self.__connection.cursor()
             cursor.execute(query, values)
@@ -114,7 +114,7 @@ class BaseMySQL:
             return True
         return False
         
-    def eliminarMed(self, reg:str):
+    def eliminarmed(self, reg:str):
         if not self.validarMed(reg):
             query = 'DELETE FROM medicos WHERE num_registro = %s'
             cursor = self.__connection.cursor()
