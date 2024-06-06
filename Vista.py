@@ -987,9 +987,8 @@ class VisualizadorDICOM(QDialog):
         self.setup()
 
     def setup(self):
-        self.Controller = controlador()
         loadUi("imagenes_dicom.ui", self)
-
+        self.Controller = controlador()
         self.label = self.findChild(QLabel, "label")
         self.frame_principal = self.findChild(QFrame, "frame_principal")
         self.btn_minimizar = self.findChild(QPushButton, "minimizar")
@@ -1001,6 +1000,7 @@ class VisualizadorDICOM(QDialog):
         self.layout_principal = QVBoxLayout(self)
         self.layout_principal.addWidget(self.frame_principal)
         self.setLayout(self.layout_principal)
+        
 
         # Conectar los eventos
         self.btn_minimizar.clicked.connect(self.minimizator)
@@ -1008,6 +1008,8 @@ class VisualizadorDICOM(QDialog):
         self.btn_adelante.clicked.connect(self.avanzar_imagen)
         self.btn_atras.clicked.connect(self.retroceder_imagen)
         self.slider.sliderMoved.connect(self.slider_moved)
+        self.setWindowFlags(Qt.FramelessWindowHint)
+        self.setAttribute(Qt.WA_TranslucentBackground)
 
     def setup2(self, namepac, lastnamepac, agepac, idpac, medpac):
         self.nombreline.setText(namepac)
