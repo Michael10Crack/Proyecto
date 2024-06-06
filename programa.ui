@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>848</width>
-    <height>670</height>
+    <width>1115</width>
+    <height>767</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,72 +16,31 @@
   <widget class="QGroupBox" name="groupBox_3">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>60</y>
-     <width>769</width>
-     <height>511</height>
+     <x>20</x>
+     <y>50</y>
+     <width>1081</width>
+     <height>671</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>12</pointsize>
+     <pointsize>10</pointsize>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(234, 198, 255);</string>
+    <string notr="true">background-color: rgb(234, 198, 255);
+border-radius: 10px;</string>
    </property>
    <property name="title">
-    <string>PROGRAMA</string>
+    <string/>
    </property>
-   <widget class="QWidget" name="gridLayoutWidget">
+   <widget class="QStackedWidget" name="base">
     <property name="geometry">
      <rect>
-      <x>120</x>
-      <y>70</y>
-      <width>521</width>
-      <height>80</height>
-     </rect>
-    </property>
-    <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="0">
-      <widget class="QPushButton" name="add">
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(232, 103, 255);</string>
-       </property>
-       <property name="text">
-        <string>AGREGAR PACIENTE</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="erase">
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(232, 103, 255);</string>
-       </property>
-       <property name="text">
-        <string>ELIMINAR PACIENTE</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QStackedWidget" name="stackedWidget">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>180</y>
-      <width>751</width>
-      <height>271</height>
+      <x>20</x>
+      <y>160</y>
+      <width>1041</width>
+      <height>431</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -90,38 +49,15 @@
     <property name="currentIndex">
      <number>2</number>
     </property>
-    <widget class="QWidget" name="bienvenida">
-     <widget class="QLabel" name="label">
+    <widget class="QWidget" name="bienvenida"/>
+    <widget class="QWidget" name="pacientes_2">
+     <widget class="QPushButton" name="newpac">
       <property name="geometry">
        <rect>
-        <x>30</x>
-        <y>70</y>
-        <width>681</width>
-        <height>111</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Segoe UI Black</family>
-        <pointsize>18</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="text">
-       <string>USTED A INGRESADO AL SISTEMA</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_2">
-      <property name="geometry">
-       <rect>
-        <x>280</x>
-        <y>170</y>
-        <width>201</width>
-        <height>20</height>
+        <x>20</x>
+        <y>20</y>
+        <width>168</width>
+        <height>61</height>
        </rect>
       </property>
       <property name="font">
@@ -129,22 +65,1608 @@
         <pointsize>10</pointsize>
        </font>
       </property>
-      <property name="text">
-       <string>Seleccione una opción</string>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	background-color: #5555ff;
+}
+
+QPushButton:hover {
+    background-color: #6CA6CD; /* Color de fondo modificado al pasar el ratón */
+}</string>
       </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
+      <property name="text">
+       <string>NUEVO</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="editpac">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>100</y>
+        <width>168</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	background-color: #5555ff;
+}
+
+QPushButton:hover {
+    background-color: #6CA6CD; /* Color de fondo modificado al pasar el ratón */
+}</string>
+      </property>
+      <property name="text">
+       <string>EDITAR</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="erasepac">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>180</y>
+        <width>168</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	background-color: #5555ff;
+}
+
+QPushButton:hover {
+    background-color: #6CA6CD; /* Color de fondo modificado al pasar el ratón */
+}</string>
+      </property>
+      <property name="text">
+       <string>ELIMINAR</string>
+      </property>
+     </widget>
+     <widget class="QStackedWidget" name="edicionespac">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>10</y>
+        <width>821</width>
+        <height>411</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(170, 255, 127);</string>
+      </property>
+      <property name="currentIndex">
+       <number>4</number>
+      </property>
+      <widget class="QWidget" name="blancopac"/>
+      <widget class="QWidget" name="camposnewpac">
+       <widget class="QGroupBox" name="groupBox">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>801</width>
+          <height>381</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="title">
+         <string>Diligencie todos los campos</string>
+        </property>
+        <widget class="QWidget" name="formLayoutWidget_2">
+         <property name="geometry">
+          <rect>
+           <x>50</x>
+           <y>40</y>
+           <width>731</width>
+           <height>341</height>
+          </rect>
+         </property>
+         <layout class="QFormLayout" name="formLayout_2">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_3">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>NOMBRE</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="namepac">
+            <property name="font">
+             <font>
+              <family>Dubai Medium</family>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
+            <property name="autoFillBackground">
+             <bool>false</bool>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(255, 255, 255);</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_4">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>APELLIDO</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="lastnamepac">
+            <property name="font">
+             <font>
+              <family>Dubai Medium</family>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(255, 255, 255);</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_5">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>EDAD</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLineEdit" name="agepac">
+            <property name="font">
+             <font>
+              <family>Dubai Medium</family>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(255, 255, 255);</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_8">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>IDENTIFICACIÓN</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QLineEdit" name="idpac">
+            <property name="font">
+             <font>
+              <family>Dubai Medium</family>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(255, 255, 255);</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="label_9">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>MEDICO DE CABECERA</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QComboBox" name="desplegmed">
+            <property name="font">
+             <font>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(255, 255, 255);</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="label_6">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>ESTUDIOS</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QPushButton" name="browse">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
+	background-color: #55aaff;
+}
+
+QPushButton:hover {
+    background-color: #ffaaff; /* Color de fondo modificado al pasar el ratón */
+}</string>
+            </property>
+            <property name="text">
+             <string>SELECCIONE EL ARCHIVO</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QPushButton" name="addpac">
+         <property name="geometry">
+          <rect>
+           <x>220</x>
+           <y>300</y>
+           <width>168</width>
+           <height>61</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+	background-color: rgb(85, 170, 127);
+}
+
+QPushButton:hover {
+    background-color: #6CA6CD; /* Color de fondo modificado al pasar el ratón */
+}</string>
+         </property>
+         <property name="text">
+          <string>GUARDAR</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="cancelpac">
+         <property name="geometry">
+          <rect>
+           <x>440</x>
+           <y>300</y>
+           <width>168</width>
+           <height>61</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+	background-color:  #FF6C17;
+}
+
+QPushButton:hover {
+    background-color: #6CA6CD; /* Color de fondo modificado al pasar el ratón */
+}</string>
+         </property>
+         <property name="text">
+          <string>CANCELAR</string>
+         </property>
+        </widget>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="camposedtpac">
+       <widget class="QGroupBox" name="groupBox_9">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>10</y>
+          <width>771</width>
+          <height>81</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
+        <property name="title">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QWidget" name="formLayoutWidget_8">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>10</y>
+          <width>751</width>
+          <height>63</height>
+         </rect>
+        </property>
+        <layout class="QFormLayout" name="formLayout_8">
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_37">
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>ID</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QPushButton" name="buscarpac">
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(85, 170, 0);</string>
+           </property>
+           <property name="text">
+            <string>BUSCAR</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLineEdit" name="idpac_buscar">
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 255, 255);</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_10">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>80</y>
+          <width>761</width>
+          <height>321</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="title">
+         <string>Diligencie todos los campos</string>
+        </property>
+        <widget class="QWidget" name="formLayoutWidget_9">
+         <property name="geometry">
+          <rect>
+           <x>50</x>
+           <y>40</y>
+           <width>681</width>
+           <height>212</height>
+          </rect>
+         </property>
+         <layout class="QFormLayout" name="formLayout_9">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_38">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>NOMBRE</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="nameedtpac">
+            <property name="font">
+             <font>
+              <family>Dubai Medium</family>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
+            <property name="autoFillBackground">
+             <bool>false</bool>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(255, 255, 255);</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_39">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>APELLIDO</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="lastnameedtpac">
+            <property name="font">
+             <font>
+              <family>Dubai Medium</family>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(255, 255, 255);</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_40">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>EDAD</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLineEdit" name="ageedtpac">
+            <property name="font">
+             <font>
+              <family>Dubai Medium</family>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(255, 255, 255);</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_41">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>IDENTIFICACIÓN</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QLineEdit" name="idedtpac">
+            <property name="font">
+             <font>
+              <family>Dubai Medium</family>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(255, 255, 255);</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="label_42">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>MEDICO DE CABECERA</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QComboBox" name="desplegedtmed">
+            <property name="font">
+             <font>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(255, 255, 255);</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="label_43">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>ESTUDIOS</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QPushButton" name="cargaedtpac">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
+	background-color: #55aaff;
+}
+
+QPushButton:hover {
+    background-color: #ffaaff; /* Color de fondo modificado al pasar el ratón */
+}</string>
+            </property>
+            <property name="text">
+             <string>SELECCIONE EL ARCHIVO</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QPushButton" name="addedtpac">
+         <property name="geometry">
+          <rect>
+           <x>170</x>
+           <y>260</y>
+           <width>168</width>
+           <height>61</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+	background-color: rgb(85, 170, 127);
+}
+
+QPushButton:hover {
+    background-color: #6CA6CD; /* Color de fondo modificado al pasar el ratón */
+}</string>
+         </property>
+         <property name="text">
+          <string>GUARDAR</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="canceledtpac">
+         <property name="geometry">
+          <rect>
+           <x>400</x>
+           <y>260</y>
+           <width>168</width>
+           <height>61</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+	background-color:  #FF6C17;
+}
+
+QPushButton:hover {
+    background-color: #6CA6CD; /* Color de fondo modificado al pasar el ratón */
+}</string>
+         </property>
+         <property name="text">
+          <string>CANCELAR</string>
+         </property>
+        </widget>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="casposeliminarpac">
+       <widget class="QWidget" name="formLayoutWidget_10">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>200</y>
+          <width>751</width>
+          <height>63</height>
+         </rect>
+        </property>
+        <layout class="QFormLayout" name="formLayout_10">
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_44">
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>ID</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QPushButton" name="paceliminar">
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(85, 170, 0);</string>
+           </property>
+           <property name="text">
+            <string>ELIMINAR</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLineEdit" name="idpac_eliminar">
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 255, 255);</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QLabel" name="title_4">
+        <property name="geometry">
+         <rect>
+          <x>280</x>
+          <y>70</y>
+          <width>261</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Century</family>
+          <pointsize>28</pointsize>
+          <underline>false</underline>
+         </font>
+        </property>
+        <property name="text">
+         <string>ELIMINAR</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="camposestudiospac">
+       <widget class="QWidget" name="formLayoutWidget_12">
+        <property name="geometry">
+         <rect>
+          <x>40</x>
+          <y>170</y>
+          <width>751</width>
+          <height>63</height>
+         </rect>
+        </property>
+        <layout class="QFormLayout" name="formLayout_13">
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_47">
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>ID</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QPushButton" name="pacestudio">
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(85, 170, 0);</string>
+           </property>
+           <property name="text">
+            <string>BUSCAR</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLineEdit" name="idpac_estudio">
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 255, 255);</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QLabel" name="title_3">
+        <property name="geometry">
+         <rect>
+          <x>300</x>
+          <y>50</y>
+          <width>231</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Century</family>
+          <pointsize>28</pointsize>
+          <underline>false</underline>
+         </font>
+        </property>
+        <property name="text">
+         <string>ESTUDIO</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+     <widget class="QPushButton" name="estudiospac">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>260</y>
+        <width>168</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	background-color: #5555ff;
+}
+
+QPushButton:hover {
+    background-color: #6CA6CD; /* Color de fondo modificado al pasar el ratón */
+}</string>
+      </property>
+      <property name="text">
+       <string>VER ESTUDIOS</string>
       </property>
      </widget>
     </widget>
-    <widget class="QWidget" name="nuevo">
-     <widget class="QGroupBox" name="groupBox">
+    <widget class="QWidget" name="medicos_2">
+     <widget class="QStackedWidget" name="edicionesmed">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>10</y>
+        <width>821</width>
+        <height>411</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(170, 170, 255);</string>
+      </property>
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="blancomed"/>
+      <widget class="QWidget" name="camposnewmed">
+       <widget class="QGroupBox" name="groupBox_5">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>801</width>
+          <height>381</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="title">
+         <string>Diligencie todos los campos</string>
+        </property>
+        <widget class="QWidget" name="formLayoutWidget_5">
+         <property name="geometry">
+          <rect>
+           <x>50</x>
+           <y>40</y>
+           <width>731</width>
+           <height>341</height>
+          </rect>
+         </property>
+         <layout class="QFormLayout" name="formLayout_5">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_21">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>NOMBRE</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="namemed">
+            <property name="font">
+             <font>
+              <family>Dubai Medium</family>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
+            <property name="autoFillBackground">
+             <bool>false</bool>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(255, 255, 255);</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_22">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>APELLIDO</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="lastnamemed">
+            <property name="font">
+             <font>
+              <family>Dubai Medium</family>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(255, 255, 255);</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_23">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>EDAD</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLineEdit" name="agemed">
+            <property name="font">
+             <font>
+              <family>Dubai Medium</family>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(255, 255, 255);</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_25">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>NÚMERO DE REGISTRO</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QLineEdit" name="regmed">
+            <property name="font">
+             <font>
+              <family>Dubai Medium</family>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(255, 255, 255);</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="label_26">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>ESPECIALIDAD</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QLineEdit" name="espmed">
+            <property name="font">
+             <font>
+              <family>Dubai Medium</family>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(255, 255, 255);</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QPushButton" name="addmed">
+         <property name="geometry">
+          <rect>
+           <x>220</x>
+           <y>300</y>
+           <width>168</width>
+           <height>61</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+	background-color: rgb(85, 170, 127);
+}
+
+QPushButton:hover {
+    background-color: #6CA6CD; /* Color de fondo modificado al pasar el ratón */
+}</string>
+         </property>
+         <property name="text">
+          <string>GUARDAR</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="cancelmed">
+         <property name="geometry">
+          <rect>
+           <x>440</x>
+           <y>300</y>
+           <width>168</width>
+           <height>61</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+	background-color:  #FF6C17;
+}
+
+QPushButton:hover {
+    background-color: #6CA6CD; /* Color de fondo modificado al pasar el ratón */
+}</string>
+         </property>
+         <property name="text">
+          <string>CANCELAR</string>
+         </property>
+        </widget>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="camposedtmed">
+       <widget class="QGroupBox" name="groupBox_7">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>0</y>
+          <width>771</width>
+          <height>81</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
+        <property name="title">
+         <string/>
+        </property>
+        <widget class="QWidget" name="formLayoutWidget">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>10</y>
+           <width>751</width>
+           <height>61</height>
+          </rect>
+         </property>
+         <layout class="QFormLayout" name="formLayout">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_30">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>REGISTRO</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QPushButton" name="buscarmed">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(85, 170, 0);</string>
+            </property>
+            <property name="text">
+             <string>BUSCAR</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="reg_buscar_2">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(255, 255, 255);</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_8">
+        <property name="geometry">
+         <rect>
+          <x>50</x>
+          <y>80</y>
+          <width>701</width>
+          <height>311</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="title">
+         <string>Diligencie todos los campos</string>
+        </property>
+        <widget class="QWidget" name="formLayoutWidget_7">
+         <property name="geometry">
+          <rect>
+           <x>90</x>
+           <y>30</y>
+           <width>601</width>
+           <height>229</height>
+          </rect>
+         </property>
+         <layout class="QFormLayout" name="formLayout_7">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_31">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>NOMBRE</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="nameedtmed">
+            <property name="font">
+             <font>
+              <family>Dubai Medium</family>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
+            <property name="autoFillBackground">
+             <bool>false</bool>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(255, 255, 255);</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_32">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>APELLIDO</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="lastnameedtmed">
+            <property name="font">
+             <font>
+              <family>Dubai Medium</family>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(255, 255, 255);</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_33">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>EDAD</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLineEdit" name="ageedtmed">
+            <property name="font">
+             <font>
+              <family>Dubai Medium</family>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(255, 255, 255);</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_35">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>NÚMERO DE REGISTRO</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QLineEdit" name="regedtmed">
+            <property name="font">
+             <font>
+              <family>Dubai Medium</family>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(255, 255, 255);</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="label_36">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>ESPECIALIDAD</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QLineEdit" name="espedtmed">
+            <property name="font">
+             <font>
+              <family>Dubai Medium</family>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(255, 255, 255);</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QPushButton" name="addedtmed">
+         <property name="geometry">
+          <rect>
+           <x>140</x>
+           <y>250</y>
+           <width>168</width>
+           <height>61</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+	background-color: rgb(85, 170, 127);
+}
+
+QPushButton:hover {
+    background-color: #6CA6CD; /* Color de fondo modificado al pasar el ratón */
+}</string>
+         </property>
+         <property name="text">
+          <string>GUARDAR</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="canceledtmed">
+         <property name="geometry">
+          <rect>
+           <x>390</x>
+           <y>250</y>
+           <width>168</width>
+           <height>61</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+	background-color:  #FF6C17;
+}
+
+QPushButton:hover {
+    background-color: #6CA6CD; /* Color de fondo modificado al pasar el ratón */
+}</string>
+         </property>
+         <property name="text">
+          <string>CANCELAR</string>
+         </property>
+        </widget>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="casposeliminarmed">
+       <widget class="QWidget" name="formLayoutWidget_11">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>150</y>
+          <width>751</width>
+          <height>63</height>
+         </rect>
+        </property>
+        <layout class="QFormLayout" name="formLayout_11">
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_45">
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>REGISTRO</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QPushButton" name="medeliminar">
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(85, 170, 0);</string>
+           </property>
+           <property name="text">
+            <string>BUSCAR</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLineEdit" name="reg_eliminar">
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(255, 255, 255);</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QLabel" name="title_2">
+        <property name="geometry">
+         <rect>
+          <x>290</x>
+          <y>40</y>
+          <width>261</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Century</family>
+          <pointsize>28</pointsize>
+          <underline>false</underline>
+         </font>
+        </property>
+        <property name="text">
+         <string>ELIMINAR</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+     <widget class="QPushButton" name="editmed">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>100</y>
+        <width>168</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	background-color: #5555ff;
+}
+
+QPushButton:hover {
+    background-color: #6CA6CD; /* Color de fondo modificado al pasar el ratón */
+}</string>
+      </property>
+      <property name="text">
+       <string>EDITAR</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="newmed">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>20</y>
+        <width>168</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	background-color: #5555ff;
+}
+
+QPushButton:hover {
+    background-color: #6CA6CD; /* Color de fondo modificado al pasar el ratón */
+}</string>
+      </property>
+      <property name="text">
+       <string>NUEVO</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="erasemed">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>180</y>
+        <width>168</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	background-color: #5555ff;
+}
+
+QPushButton:hover {
+    background-color: #6CA6CD; /* Color de fondo modificado al pasar el ratón */
+}</string>
+      </property>
+      <property name="text">
+       <string>ELIMINAR</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="citas_2">
+     <widget class="QGroupBox" name="groupBox_6">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>10</y>
-        <width>721</width>
-        <height>281</height>
+        <y>90</y>
+        <width>581</width>
+        <height>191</height>
        </rect>
       </property>
       <property name="font">
@@ -156,27 +1678,27 @@
        <string notr="true"/>
       </property>
       <property name="title">
-       <string>NUEVO</string>
+       <string>Diligencie todos los campos</string>
       </property>
-      <widget class="QWidget" name="formLayoutWidget_2">
+      <widget class="QWidget" name="formLayoutWidget_6">
        <property name="geometry">
         <rect>
          <x>50</x>
          <y>40</y>
-         <width>641</width>
-         <height>204</height>
+         <width>501</width>
+         <height>119</height>
         </rect>
        </property>
-       <layout class="QFormLayout" name="formLayout_2">
+       <layout class="QFormLayout" name="formLayout_6">
         <item row="0" column="0">
-         <widget class="QLabel" name="label_3">
+         <widget class="QLabel" name="label_27">
           <property name="font">
            <font>
             <pointsize>10</pointsize>
            </font>
           </property>
           <property name="text">
-           <string>NOMBRE</string>
+           <string>ID PACIENTE:</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -184,7 +1706,7 @@
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="QLineEdit" name="name">
+         <widget class="QLineEdit" name="idcita">
           <property name="font">
            <font>
             <family>Dubai Medium</family>
@@ -200,42 +1722,29 @@
          </widget>
         </item>
         <item row="1" column="0">
-         <widget class="QLabel" name="label_4">
+         <widget class="QLabel" name="label_28">
           <property name="font">
            <font>
             <pointsize>10</pointsize>
            </font>
           </property>
           <property name="text">
-           <string>APELLIDO</string>
+           <string>MEDICO:</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
          </widget>
         </item>
-        <item row="1" column="1">
-         <widget class="QLineEdit" name="lastname">
-          <property name="font">
-           <font>
-            <family>Dubai Medium</family>
-            <pointsize>11</pointsize>
-           </font>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">background-color: rgb(255, 255, 255);</string>
-          </property>
-         </widget>
-        </item>
         <item row="2" column="0">
-         <widget class="QLabel" name="label_5">
+         <widget class="QLabel" name="label_29">
           <property name="font">
            <font>
             <pointsize>10</pointsize>
            </font>
           </property>
           <property name="text">
-           <string>EDAD</string>
+           <string>HORA:</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -243,11 +1752,10 @@
          </widget>
         </item>
         <item row="2" column="1">
-         <widget class="QLineEdit" name="age">
+         <widget class="QComboBox" name="desplegabletime">
           <property name="font">
            <font>
-            <family>Dubai Medium</family>
-            <pointsize>11</pointsize>
+            <pointsize>12</pointsize>
            </font>
           </property>
           <property name="styleSheet">
@@ -255,161 +1763,95 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="1">
-         <widget class="QLineEdit" name="id">
+        <item row="1" column="1">
+         <widget class="QComboBox" name="desplegablemed">
           <property name="font">
            <font>
-            <family>Dubai Medium</family>
-            <pointsize>11</pointsize>
+            <pointsize>12</pointsize>
            </font>
           </property>
           <property name="styleSheet">
            <string notr="true">background-color: rgb(255, 255, 255);</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="1">
-         <layout class="QHBoxLayout" name="horizontalLayout">
-          <item>
-           <widget class="QPushButton" name="agregar">
-            <property name="styleSheet">
-             <string notr="true">background-color: rgb(170, 170, 255);</string>
-            </property>
-            <property name="text">
-             <string>AGREGAR</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="cancel">
-            <property name="styleSheet">
-             <string notr="true">background-color: rgb(255, 108, 23);</string>
-            </property>
-            <property name="text">
-             <string>CANCELAR</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="label_6">
-          <property name="font">
-           <font>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>IDENTIFICACIÓN</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
          </widget>
         </item>
        </layout>
       </widget>
      </widget>
-    </widget>
-    <widget class="QWidget" name="eliminar">
-     <widget class="QGroupBox" name="groupBox_2">
+     <widget class="QCalendarWidget" name="calendarWidget">
       <property name="geometry">
        <rect>
-        <x>30</x>
-        <y>20</y>
-        <width>701</width>
-        <height>231</height>
+        <x>590</x>
+        <y>60</y>
+        <width>415</width>
+        <height>233</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(187, 139, 255);</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="cancelcita">
+      <property name="geometry">
+       <rect>
+        <x>560</x>
+        <y>330</y>
+        <width>168</width>
+        <height>61</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <pointsize>14</pointsize>
+        <pointsize>10</pointsize>
        </font>
       </property>
-      <property name="title">
-       <string>ELIMINAR PACIENTE</string>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	background-color:  #FF6C17;
+}
+
+QPushButton:hover {
+    background-color: #6CA6CD; /* Color de fondo modificado al pasar el ratón */
+}</string>
       </property>
-      <widget class="QWidget" name="formLayoutWidget">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>40</y>
-         <width>671</width>
-         <height>191</height>
-        </rect>
-       </property>
-       <layout class="QFormLayout" name="formLayout">
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_7">
-          <property name="font">
-           <font>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>INICALES DEL PACIENTE</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QLineEdit" name="paciente_buscar"/>
-        </item>
-        <item row="1" column="1">
-         <widget class="QPushButton" name="busca">
-          <property name="font">
-           <font>
-            <pointsize>7</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>BUSCAR</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0" colspan="2">
-         <widget class="QTableWidget" name="patientTable">
-          <property name="font">
-           <font>
-            <pointsize>7</pointsize>
-           </font>
-          </property>
-          <column>
-           <property name="text">
-            <string>NOMBRE</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>APELLIDO</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>EDAD</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>IDENTIFICACION</string>
-           </property>
-          </column>
-          <column>
-           <property name="text">
-            <string>ELIMINAR</string>
-           </property>
-          </column>
-         </widget>
-        </item>
-       </layout>
-      </widget>
+      <property name="text">
+       <string>CANCELAR</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="addcita">
+      <property name="geometry">
+       <rect>
+        <x>330</x>
+        <y>330</y>
+        <width>168</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	background-color: rgb(85, 170, 127);
+}
+
+QPushButton:hover {
+    background-color: #6CA6CD; /* Color de fondo modificado al pasar el ratón */
+}</string>
+      </property>
+      <property name="text">
+       <string>GUARDAR</string>
+      </property>
      </widget>
     </widget>
    </widget>
-   <widget class="QPushButton" name="minimizar_2">
+   <widget class="QPushButton" name="min">
     <property name="geometry">
      <rect>
-      <x>700</x>
-      <y>20</y>
+      <x>1020</x>
+      <y>30</y>
       <width>31</width>
       <height>31</height>
      </rect>
@@ -425,7 +1867,7 @@
     </property>
     <property name="styleSheet">
      <string notr="true">QPushButton {
-        background-color: orange;
+        background-color: #4CAF50;
         border: none;
         border-radius: 10px;;
     }</string>
@@ -437,11 +1879,11 @@
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QPushButton" name="exit_2">
+   <widget class="QPushButton" name="out">
     <property name="geometry">
      <rect>
-      <x>310</x>
-      <y>460</y>
+      <x>910</x>
+      <y>610</y>
       <width>131</width>
       <height>31</height>
      </rect>
@@ -467,6 +1909,81 @@
     </property>
     <property name="autoExclusive">
      <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pacientes">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>70</y>
+      <width>168</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+	background-color: #E867FF;
+}
+
+QPushButton:hover {
+    background-color: #6CA6CD; /* Color de fondo modificado al pasar el ratón */
+}</string>
+    </property>
+    <property name="text">
+     <string>PACIENTES</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="medicos">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>70</y>
+      <width>168</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+	background-color: #E867FF;
+}
+
+QPushButton:hover {
+    background-color: #6CA6CD; /* Color de fondo modificado al pasar el ratón */
+}</string>
+    </property>
+    <property name="text">
+     <string>MÉDICOS</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="title">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>30</y>
+      <width>201</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Seleccione una opción</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
     </property>
    </widget>
   </widget>

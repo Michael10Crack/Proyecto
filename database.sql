@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 02-06-2024 a las 15:15:06
+-- Tiempo de generación: 06-06-2024 a las 18:29:37
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -24,6 +24,30 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `medicos`
+--
+
+CREATE TABLE `medicos` (
+  `nombre` varchar(50) NOT NULL,
+  `apellido` varchar(50) NOT NULL,
+  `edad` int(3) NOT NULL,
+  `num_registro` int(20) NOT NULL,
+  `especialidad` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `medicos`
+--
+
+INSERT INTO `medicos` (`nombre`, `apellido`, `edad`, `num_registro`, `especialidad`) VALUES
+('JOSE ALBERTO', 'HURTADO VARGAS', 54, 1010, 'NEUROLOGIA'),
+('CATALINA', 'SANCHEZ VALVUENA', 22, 1090, 'NUTRICION'),
+('MARIA', 'VARGAS CONTRERAS', 28, 2324, 'CARDIOLOGIA'),
+('ANDRES ', 'MARQUEZ ESCOBAR', 32, 8080, 'OTORRINOLARINGOLOGO');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `pacientes`
 --
 
@@ -31,38 +55,31 @@ CREATE TABLE `pacientes` (
   `nombre` varchar(50) NOT NULL,
   `apellido` varchar(50) NOT NULL,
   `edad` varchar(3) NOT NULL,
-  `identificacion` varchar(20) NOT NULL
+  `identificacion` varchar(20) NOT NULL,
+  `med_cabecera` mediumtext NOT NULL,
+  `url` mediumtext NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `pacientes`
 --
 
-INSERT INTO `pacientes` (`nombre`, `apellido`, `edad`, `identificacion`) VALUES
-('MARTHA', 'FUERTE', '15', '1000476351'),
-('LINA', 'VASQUEZ', '25', '1025369784'),
-('MARCELA', 'ALVAREZ', '26', '1113537397'),
-('FRANCO', 'MESA', '22', '1783246222'),
-('CAMILA', 'PEÑA', '5', '1783364'),
-('SOFIA', 'MUEH', '45', '4786455'),
-('LINA', 'FRANCO', '45', '47895467'),
-('VALERIA', 'MEJIA', '61', '54789224'),
-('JUANA', 'ARCO', '12', '54961148'),
-('AMANDA', 'MIGUEL', '47', '566484984'),
-('JUAN', 'JURADO', '63', '57845962'),
-('JULIO', 'VEGA', '36', '61249781'),
-('MATEO', 'ASPRILLA', '10', '66974589'),
-('CHUCHO', 'HERRERA', '78', '75698664'),
-('TATA', 'HERRERA', '78', '789215'),
-('JULIO', 'MESA', '78', '78925156'),
-('PAOLA', 'HERRERA', '78', '789664'),
-('GLORIA', 'MEDINA', '60', '8896547'),
-('GINA', 'JURADO', '78', '981646'),
-('FABIO', 'PLAZA', '78', '999662');
+INSERT INTO `pacientes` (`nombre`, `apellido`, `edad`, `identificacion`, `med_cabecera`, `url`) VALUES
+('PEDRO', 'PEREZ', '54', '56956877', 'MARIA VARGAS CONTRERAS', 'Archivos_Dicom/601.000000-T2 TSE cor-19169'),
+('LUNA', 'RIOS', '654', '5985694', 'CATALINA SANCHEZ VALVUENA', 'Archivos_Dicom/601.000000-T2 TSE cor-19169'),
+('JAIME', 'ALTOZANO', '58', '6448748', 'MARIA VARGAS CONTRERAS', 'Archivos_Dicom/601.000000-T2 TSE cor-19169'),
+('MATEO', 'ASPRILLA', '10', '66974589', 'JOSE ALBERTO HURTADO VARGAS', 'Archivos_Dicom/701.000000-T2 TSE sag-64102'),
+('JAIRO', 'REYES', '554', '798949145', 'JOSE ALBERTO HURTADO VARGAS', 'Archivos_Dicom/601.000000-T2 TSE cor-19169');
 
 --
 -- Índices para tablas volcadas
 --
+
+--
+-- Indices de la tabla `medicos`
+--
+ALTER TABLE `medicos`
+  ADD PRIMARY KEY (`num_registro`);
 
 --
 -- Indices de la tabla `pacientes`
