@@ -1,21 +1,23 @@
 import sys 
 import pydicom
 import os
+import cv2
 from Controlador import *
-from PyQt5.QtWidgets import QApplication, QDialog, QMessageBox, QLineEdit, QFileDialog
+from PyQt5.QtWidgets import QApplication, QDialog, QMessageBox, QLineEdit, QFileDialog, QVBoxLayout, QLabel, QPushButton, QMessageBox
 from PyQt5.QtGui import QRegExpValidator, QPixmap
-from PyQt5.QtCore import Qt, QRegExp
+from PyQt5.QtCore import Qt, QRegExp, QTimer
 from PyQt5.uic import loadUi
+
 
 class ventanaLogin(QDialog):
     def __init__(self):
         super().__init__()
         loadUi("login.ui",self)
         self.Controller = controlador()
-        self.setWindowFlags(Qt.FramelessWindowHint)
-        self.setAttribute(Qt.WA_TranslucentBackground)
         self.ventananewuser = newuser(self)
         self.ventanaedituser = edituser(self)
+        self.setWindowFlags(Qt.FramelessWindowHint)
+        self.setAttribute(Qt.WA_TranslucentBackground)
         self.setup()
 
     def setup(self):
@@ -74,8 +76,7 @@ class ventanaLogin(QDialog):
     def edituser(self):
         self.limpiar_campos()
         self.hide()
-        self.ventanaedituser.show()
-         
+        self.ventanaedituser.show()        
     # Metodos de implementación de eventos de ratón, dado que la ventana es personalizada
     def mousePressEvent(self, event): # Inicia el arrastre
         if event.buttons() == Qt.LeftButton:
@@ -343,8 +344,11 @@ class programa(QDialog):
         super().__init__()
         loadUi("programa.ui", self)
         self.Controller = controlador()
-        self.nombre_medico = ""
-        self.url = ""
+        self.verEstudio = VisualizadorDICOM()
+        self.nombre_medicopn = ""
+        self.nombre_medicope = ""
+        self.urlpn = ""
+        self.urlpe = ""
         self.setWindowFlags(Qt.FramelessWindowHint)
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.setup()
@@ -472,65 +476,25 @@ class programa(QDialog):
                         # Procesar el archivo DICOM
                             manejador_dicom = self.Controller.manejodicompath(dicom_data)
                             imagen_procesada = self.Controller.apply_modality_lut(manejador_dicom.pixel_array)
-                        self.url = ruta_carpeta
+                        self.urlpe = ruta_carpeta
+                        self.urlpn = ruta_carpeta
                         self.exito(ruta_carpeta)
-                        self.ageedtpac.setText("ARCHIVO CARGADO")
+                        self.browse.setText("ARCHIVO CARGADO")
                         self.cargaedtpac.setText("ARCHIVO CARGADO")
                     except pydicom.errors.InvalidDicomError:
                         # El archivo no es un archivo DICOM válido
                         self.mostrar_advertencia()
                         pass
 
-    def abrir_dicom(self, namepac, lastnamepac, agepac, idpac, medpac, url):
-        ruta_carpeta = url
-        if ruta_carpeta:
-            archivos_dicom = [os.path.join(ruta_carpeta, file) for file in os.listdir(ruta_carpeta) if file.endswith('.dcm')]
-            if archivos_dicom:
-                    try:
-                        for file in archivos_dicom:
-                            dicom_data = pydicom.dcmread(file)                        
-                        # Procesar el archivo DICOM
-                            manejador_dicom = self.Controller.manejodicompath(dicom_data)
-                            imagen_procesada = self.Controller.apply_modality_lut(manejador_dicom.pixel_array)
-                        self.mostrar_imagenes_dicom(imagen_procesada, namepac, lastnamepac, agepac, idpac, medpac)
-                    except pydicom.errors.InvalidDicomError:
-                        # El archivo no es un archivo DICOM válido
-                        pass
-
-    def mostrar_imagenes_dicom(self, imagen_procesada, namepac, lastnamepac, agepac, idpac, medpac):
-        ventana = VentanaEmergente(namepac, lastnamepac, agepac, idpac, medpac) #la defino como la clase
-        ventana.mostrar_imagen_procesada(imagen_procesada) # 'plotear'
-        ventana.exec_() #mostrar la ventana
-
-    def exito(self, ruta_carpeta):
-        # Mostrar una ventana emergente con un mensaje de procesamiento exitoso
-        msgBox = QMessageBox()
-        msgBox.setIcon(QMessageBox.Information)
-        msgBox.setText(f'Carpeta DICOM seleccionada: {ruta_carpeta}')
-        msgBox.setWindowTitle('Información')
-        msgBox.setStandardButtons(QMessageBox.Ok)
-        msgBox.exec()
-
-    def mostrar_advertencia(self):
-        # Mostrar una ventana emergente con un mensaje de advertencia
-        msgBox = QMessageBox()
-        msgBox.setIcon(QMessageBox.Warning)
-        msgBox.setText("La carpeta seleccionada contiene al menos 1 archivo diferente a .dcm.")
-        msgBox.setWindowTitle('Advertencia')
-        msgBox.setStandardButtons(QMessageBox.Ok)
-        msgBox.exec()
-        
     def okPacNuevo(self):
         namepac = self.namepac.text().upper()
         lastnamepac = self.lastnamepac.text().upper()
         agepac = self.agepac.text()
         texto = self.idpac.text()
         idpac = ''.join(c.upper() if c.isalpha() else c for c in texto)
-        medpac = self.nombre_medico
-        url = self.url
+        medpac = self.nombre_medicopn
+        url = self.urlpn
         if not namepac or not lastnamepac or not agepac or not idpac or medpac == '' or url == '':
-            self.nombre_medico = ""
-            self.url = ""
             msgBox = QMessageBox()
             msgBox.setIcon(QMessageBox.Warning)
             msgBox.setText('Por favor, complete todos los campos.')
@@ -538,7 +502,8 @@ class programa(QDialog):
             msgBox.setStandardButtons(QMessageBox.Ok)
             self.limpiar_campos_PacNuevo()
             self.browse.setText("SELECCIONE EL ARCHIVO")
-            self.url = ''
+            self.urlpn = ''
+            self.nombre_medicopn = ''
             msgBox.exec()
         else:
             bool = self.Controller.ingresarPacCont(namepac, lastnamepac, agepac, idpac, medpac, url)
@@ -551,7 +516,8 @@ class programa(QDialog):
                 self.limpiar_campos_PacNuevo()
                 self.groupBox_10.hide()
                 self.browse.setText("SELECCIONE EL ARCHIVO")
-                self.url = ''
+                self.urlpn = ''
+                self.nombre_medicopn = ''
                 msgBox.exec()
             else:
                 msgBox = QMessageBox()
@@ -562,6 +528,7 @@ class programa(QDialog):
                 self.limpiar_campos_PacNuevo()
                 self.agepac.setText("SELECCIONE EL ARCHIVO")
                 self.url = ''
+                self.nombre_medicopn = ''
                 msgBox.exec()
         
     def okPacEdit(self):
@@ -570,18 +537,19 @@ class programa(QDialog):
         ageedtpac = self.ageedtpac.text()
         texto = self.idedtpac.text()
         idedtpac = ''.join(c.upper() if c.isalpha() else c for c in texto)
-        medpac = self.nombre_medico
-        url = self.url
+        medpac = self.nombre_medicope
+        url = self.urlpe
         idpac_buscar = self.idpac_buscar.text()
-        if not nameedtpac or not lastnameedtpac or not ageedtpac or not idedtpac or not medpac == '' or not url == '':
-            self.nombre_medico = ""
-            self.url = ""
+        if not nameedtpac or not lastnameedtpac or not ageedtpac or not idedtpac or medpac == '' or url == '':
             msgBox = QMessageBox()
             msgBox.setIcon(QMessageBox.Warning)
             msgBox.setText('Por favor, complete todos los campos.')
             msgBox.setWindowTitle('Campos incompletos')
             msgBox.setStandardButtons(QMessageBox.Ok)
             self.limpiar_campos_PacEdit()
+            self.cargaedtpac.setText("SELECCIONE EL ARCHIVO")
+            self.urlpe = ''
+            self.nombre_medicope = ''
             msgBox.exec()
         else:
             bool = self.Controller.editarPacCont(idpac_buscar, idedtpac, nameedtpac, lastnameedtpac, ageedtpac, medpac, url )
@@ -594,7 +562,8 @@ class programa(QDialog):
                 self.limpiar_campos_PacEdit()
                 self.groupBox_10.hide()
                 self.cargaedtpac.setText("SELECCIONE EL ARCHIVO")
-                self.url = ''
+                self.urlpe = ''
+                self.nombre_medicope = ''
                 msgBox.exec()
             else:
                 msgBox = QMessageBox()
@@ -604,7 +573,8 @@ class programa(QDialog):
                 msgBox.setStandardButtons(QMessageBox.Ok)
                 self.limpiar_campos_PacEdit()
                 self.cargaedtpac.setText("SELECCIONE EL ARCHIVO")
-                self.url = ''
+                self.urlpe = ''
+                self.nombre_medicope = ''
                 msgBox.exec()
 
     def limpiar_campos_PacNuevo(self):
@@ -612,16 +582,20 @@ class programa(QDialog):
         self.lastnamepac.setText("")
         self.agepac.setText("")
         self.idpac.setText("")
-        self.nombre_medico = ""
-        self.url = ""
+        self.nombre_medicopn = ""
+        self.urlpn = ""
+        self.nombre_medicope = ""
+        self.urlpe = ""
     
     def limpiar_campos_PacEdit(self):
         self.nameedtpac.setText("")
         self.lastnameedtpac.setText("")
         self.ageedtpac.setText("")
         self.idedtpac.setText("")
-        self.nombre_medico = ""
-        self.url = ""
+        self.nombre_medicopn = ""
+        self.urlpn = ""
+        self.nombre_medicope = ""
+        self.urlpe = ""
 
     def volver(self):
         self.nameedtpac.setText("")
@@ -633,8 +607,10 @@ class programa(QDialog):
         self.agepac.setText("")
         self.idpac.setText("")
         self.idpac_buscar.setText("")
-        self.nombre_medico = ""
-        self.url = ""
+        self.nombre_medicopn = ""
+        self.urlpn = ""
+        self.nombre_medicope = ""
+        self.urlpe = ""
         self.edicionespac.setCurrentIndex(0)
         
     def lista_med(self):
@@ -642,11 +618,14 @@ class programa(QDialog):
         lista_medicos.insert(0, "")
         self.desplegmed.addItems(lista_medicos)
         self.desplegedtmed.addItems(lista_medicos)
-        self.desplegmed.currentTextChanged.connect(self.actualizar_nombremed_seleccionado)
-        self.desplegedtmed.currentTextChanged.connect(self.actualizar_nombremed_seleccionado)
+        self.desplegmed.currentTextChanged.connect(self.actualizar_nombremed_seleccionadopacn)
+        self.desplegedtmed.currentTextChanged.connect(self.actualizar_nombremed_seleccionadopace)
         
-    def actualizar_nombremed_seleccionado(self, nombre_seleccionado):
-        self.nombre_medico = nombre_seleccionado
+    def actualizar_nombremed_seleccionadopacn(self, nombre_seleccionado):
+        self.nombre_medicopn = nombre_seleccionado
+    
+    def actualizar_nombremed_seleccionadopace(self, nombre_seleccionado):
+        self.nombre_medicope = nombre_seleccionado
 
     def busquedaPac(self):
         texto = self.idpac_buscar.text()
@@ -671,7 +650,6 @@ class programa(QDialog):
             else:
                 self.groupBox_10.show()
 
-
     def eliminarpac(self):
         texto = self.idpac_eliminar.text()
         idpac_eliminar = ''.join(c.upper() if c.isalpha() else c for c in texto)
@@ -682,25 +660,7 @@ class programa(QDialog):
             msgBox.setWindowTitle('Campo incompleto')
             msgBox.setStandardButtons(QMessageBox.Ok)
             self.idpac_eliminar.setText("")
-            msgBox.exec()
-            
-            
-            
-        if not idpac_eliminar:
-        self.mostrarMensaje('Campo incompleto', 'Por favor, complete el campo.')
-        return
-
-    eliminado_exitosamente = self.Controller.eliminarPacCont(idpac_eliminar)
-    
-    if eliminado_exitosamente:
-        self.mostrarMensaje('Paciente eliminado', 'Paciente eliminado exitosamente.')
-    else:
-        self.mostrarMensaje('Paciente no existente', 'Paciente no existente en la base de datos.')
-
-    self.idpac_eliminar.setText("")
-            
-            
-            
+            msgBox.exec()  
         else:
             bool = self.Controller.eliminarPacCont(idpac_eliminar)
             if bool:
@@ -710,8 +670,8 @@ class programa(QDialog):
                 msgBox.setWindowTitle('Paciente no existente')
                 msgBox.setStandardButtons(QMessageBox.Ok)
                 self.idpac_eliminar.setText("")
-                msgBox.exec() 
-            else:
+                msgBox.exec()
+            elif bool == False:
                 msgBox = QMessageBox()
                 msgBox.setIcon(QMessageBox.Warning)
                 msgBox.setText('Paciente eliminado exitosamente')
@@ -719,7 +679,7 @@ class programa(QDialog):
                 msgBox.setStandardButtons(QMessageBox.Ok)
                 self.idpac_eliminar.setText("")
                 msgBox.exec()
-
+                
     def estudio(self):
         texto = self.idpac_estudio.text()
         idpac_estudio = ''.join(c.upper() if c.isalpha() else c for c in texto)
@@ -733,8 +693,29 @@ class programa(QDialog):
             msgBox.exec()
         else:
             namepac, lastnamepac, agepac, idpac, medpac, url, = self.Controller.pacienteCon(idpac_estudio)
-            self.abrir_dicom(namepac, lastnamepac, agepac, idpac, medpac, url)
-           
+            self.hide()
+            self.verEstudio.show()
+            ruta = r'C:\Users\avata\OneDrive\Desktop\Proyecto - copia\Archivos_Dicom\501.000000-T2 TSE ax hi-71811'
+            self.verEstudio.initUI(ruta)
+    
+    def exito(self, ruta_carpeta):
+        # Mostrar una ventana emergente con un mensaje de procesamiento exitoso
+        msgBox = QMessageBox()
+        msgBox.setIcon(QMessageBox.Information)
+        msgBox.setText(f'Carpeta DICOM seleccionada: {ruta_carpeta}')
+        msgBox.setWindowTitle('Información')
+        msgBox.setStandardButtons(QMessageBox.Ok)
+        msgBox.exec()
+
+    def mostrar_advertencia(self):
+        # Mostrar una ventana emergente con un mensaje de advertencia
+        msgBox = QMessageBox()
+        msgBox.setIcon(QMessageBox.Warning)
+        msgBox.setText("La carpeta seleccionada contiene al menos 1 archivo diferente a .dcm.")
+        msgBox.setWindowTitle('Advertencia')
+        msgBox.setStandardButtons(QMessageBox.Ok)
+        msgBox.exec()
+         
     def holamed(self):
         self.base.setCurrentIndex(2)
         self.newmed.clicked.connect(self.nuevopac)
@@ -760,55 +741,60 @@ class programa(QDialog):
         except:
             pass
 
-class VentanaEmergente(QDialog):
-    def __init__(self, namepac:str, lastnamepac:str, agepac:str, idpac:str, medpac:str):
+class VisualizadorDICOM(QDialog):
+    def __init__(self):
         super().__init__()
-        loadUi("imagenes_dicom.ui",self)
-        self.minimizar.clicked.connect(self.minimizator)
-        self.exit.clicked.connect(self.salir)
-        self.setWindowFlags(Qt.FramelessWindowHint)
-        self.setAttribute(Qt.WA_TranslucentBackground)
-        self.horizontalSlider.valueChanged.connect(self.actualizar_imagen) #configurar el slider
-        self.nombreline.setText(namepac)
-        self.apellidoline.setText(lastnamepac)
-        self.edadline.setText(agepac)
-        self.idline.setText(idpac)
-        self.medicoline.setText(medpac)
+        self.ruta_carpeta = None
+        self.archivos_dicom = []
+        self.indice_actual = 0
+        self.label = None
+        self.timer = None
+        self.setup()
 
-    def minimizator(self):
-        self.showMinimized()
-        
-    def salir(self):
-        self.Controller.desconectar()
-        QApplication.quit()  
+    def setup(self):
+        loadUi("imagenes_dicom.ui", self)
+        self.label = QLabel()
+        self.label.setAlignment(Qt.AlignCenter)
+        self.layout = QVBoxLayout()
+        self.layout.addWidget(self.label)
+        self.setLayout(self.layout)
 
-    def mostrar_imagen_procesada(self, imagen_procesada):
-        self.imagen_procesada = imagen_procesada
-        self.actualizar_imagen()
+    def initUI(self, ruta):
+        self.ruta_carpeta = ruta
+        # Configurar el timer para cambiar las imágenes automáticamente
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.mostrar_siguiente_imagen)
+        self.timer.start(2000)  # Cambiar la imagen cada 2 segundos
 
-    def actualizar_imagen(self):
-        indice = self.horizontalSlider.value()
-        imagen = self.imagen_procesada[indice]
-        pixmap = QPixmap.fromImage(imagen)
-        self.label.setPixmap(pixmap)
-# Metodos de implementación de eventos de ratón, dado que la ventana es personalizada
-    def mousePressEvent(self, event): # Inicia el arrastre
-        if event.buttons() == Qt.LeftButton:
-            self.dragging = True # Se indica que está en modo de arrastre
-            self.offset = event.pos() # Guardo la posición
+        # Obtener la lista de archivos DICOM en la carpeta especificada
+        self.archivos_dicom = [os.path.join(ruta, file) for file in os.listdir(ruta) if file.endswith('.dcm')]
+        self.indice_actual = 0  # Índice de la imagen actual
 
-    def mouseReleaseEvent(self, event): # Termina el arrastre.
-        if event.button() == Qt.LeftButton:
-            self.dragging = False # Arraste terminado 
-            
-    def mouseMoveEvent(self, event): # Calcula y realiza el movimiento del widget durante el arrastre.
-        try:
-            if self.dragging:
-                self.move(self.mapToGlobal(event.pos() - self.offset)) 
-                # Mueve el widget a la nueva posición calculada en función del 
-                # desplazamiento del cursor desde el momento en que se inició el arrastre.
-        except:
-            pass
+        # Mostrar la primera imagen
+        self.mostrar_siguiente_imagen()
+
+    def mostrar_siguiente_imagen(self):
+        if self.archivos_dicom:
+            if self.indice_actual < len(self.archivos_dicom):
+                archivo_dicom = self.archivos_dicom[self.indice_actual]
+                imagen_dicom = pydicom.dcmread(archivo_dicom)
+                pixel_data = imagen_dicom.pixel_array
+
+                imagen_normalizada = cv2.normalize(pixel_data, None, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX)
+
+                alpha = 1.5
+                beta = 50
+                imagen_ajustada = cv2.convertScaleAbs(imagen_normalizada, alpha=alpha, beta=beta)
+
+                imagen_qt = QImage(imagen_ajustada.data, imagen_ajustada.shape[1], imagen_ajustada.shape[0], QImage.Format_Grayscale8)
+
+                pixmap = QPixmap.fromImage(imagen_qt)
+                self.label.setPixmap(pixmap)
+
+                self.indice_actual += 1
+            else:
+                self.indice_actual = 0
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

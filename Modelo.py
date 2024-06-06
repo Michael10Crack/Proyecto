@@ -48,15 +48,14 @@ class BaseMySQL:
         return False
         
     def eliminarPac(self, idpac:str):
-        if self.validarPac(idpac) == 0:
-            return False
-        else:             
+        if not self.validarPac(idpac):
             query = 'DELETE FROM pacientes WHERE identificacion = %s'
             cursor = self.__connection.cursor()
             cursor.execute(query, (idpac,))
             self.__connection.commit()
             cursor.close()
-            return True
+            return False
+        return True
     
     def editarPac(self, idpac:str, nueva_id:str, namepac:str, lastnamepac:str, agepac:str, medpac:str, url:str):
         # Verificar si la nueva ID ya existe
