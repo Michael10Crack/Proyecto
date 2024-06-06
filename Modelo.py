@@ -95,10 +95,10 @@ class BaseMySQL:
 
 ########## MEDICOS ###############
 
-    def validarMed(self, identificacion:str):
-        query = 'SELECT * FROM medicos WHERE identificacion = %s'
+    def validarMed(self, reg:str):
+        query = 'SELECT * FROM medicos WHERE num_registro = %s'
         cursor = self.__connection.cursor()
-        cursor.execute(query, (identificacion,))
+        cursor.execute(query, (reg,))
         results = cursor.fetchall()
         cursor.close()
         return len(results) == 0
@@ -114,24 +114,23 @@ class BaseMySQL:
             return True
         return False
         
-    def eliminarMed(self, idmed:str):
-        if self.validarPac(idmed) == None:
-            return False
-        else:             
-            query = 'DELETE FROM medicos WHERE identificacion = %s'
+    def eliminarMed(self, reg:str):
+        if not self.validarMed(reg):
+            query = 'DELETE FROM medicos WHERE num_registro = %s'
             cursor = self.__connection.cursor()
-            cursor.execute(query, (idmed,))
+            cursor.execute(query, (reg,))
             self.__connection.commit()
             cursor.close()
-            return True
-    
-    def editarMed(self, idmedc:str, nueva_id:str, namemed:str, lastnamemed:str, agemed:str, num_registro:str, esp:str):
+            return False
+        return True
+
+    def editarMed(self, num_registro:str, nuevoreg:str, namemed:str, lastnamemed:str, agemed:str, esp:str):
         # Verificar si la nueva ID ya existe
-        if not self.validarPac(nueva_id):
+        if not self.validarMed(nuevoreg):
             return False
         cursor = self.__connection.cursor()
-        sql = "UPDATE medicos SET identificacion = %s, nombre = %s, apellido = %s, edad = %s, num_registro = %s, especialidad = %s WHERE identificacion = %s"
-        val = (nueva_id, namemed, lastnamemed, agemed, num_registro, esp, idmedc)
+        sql = "UPDATE medicos SET num_registro = %s, nombre = %s, apellido = %s, edad = %s, num_registro = %s, especialidad = %s WHERE num_registro = %s"
+        val = (nuevoreg, namemed, lastnamemed, agemed, num_registro, esp, num_registro)
         cursor.execute(sql, val)
         self.__connection.commit()
         cursor.close()

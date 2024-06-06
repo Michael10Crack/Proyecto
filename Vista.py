@@ -707,7 +707,6 @@ class programa(QDialog):
             self.verEstudio.initUI(url)
             self.verEstudio.setup2(namepac, lastnamepac, agepac, idpac, medpac)
             
-    
     def exito(self, ruta_carpeta):
         # Mostrar una ventana emergente con un mensaje de procesamiento exitoso
         msgBox = QMessageBox()
@@ -725,13 +724,224 @@ class programa(QDialog):
         msgBox.setWindowTitle('Advertencia')
         msgBox.setStandardButtons(QMessageBox.Ok)
         msgBox.exec()
-         
+    
     def holamed(self):
         self.base.setCurrentIndex(2)
-        self.newmed.clicked.connect(self.nuevopac)
-        self.editmed.clicked.connect(self.editarmed)
-        self.erasemed.clicked.connect(self.borrarmed)
+        self.edicionesmed.show()
+        self.edicionesmed.setCurrentIndex(0)
+        self.hojasmed()
+        self.newmed.clicked.connect(lambda: self.edicionesmed.setCurrentIndex(1))
+        self.editmed.clicked.connect(lambda: self.edicionesmed.setCurrentIndex(2))
+        self.erasemed.clicked.connect(lambda: self.edicionesmed.setCurrentIndex(3))
+        self.edicionesmed.currentChanged.connect(self.update_widgets)
+        
+        def hojasmed(self):
+        regex = r'^[a-zA-Z0-9]+$'
+        validator = QRegExpValidator(QRegExp(regex))
+        self.namemed.setValidator(validator)
+        self.lastnamemed.setValidator(validator)
+        self.agemed.setValidator(QRegExpValidator(QRegExp("[0-9]*")))
+        self.regmed.setValidator(QRegExpValidator(QRegExp("[0-9]*")))
+        self.espmed.setValidator(validator)
+        self.regedtmed.setValidator(validator)
+        self.nameedtmed.setValidator(validator)
+        self.lastnameedtmed.setValidator(validator)
+        self.ageedtmed.setValidator(QRegExpValidator(QRegExp("[0-9]*")))
+        self.regedtmed.setValidator(QRegExpValidator(QRegExp("[0-9]*")))
+        self.espedtmed.setValidator(validator)
+
+    def update_widgets(self, index):
+        if index == 1:
+            self.addmed.clicked.connect(self.anadirMedNuevo)
+            self.cancelmed.clicked.connect(self.volver)
+        elif index == 2:
+            self.buscarmed.clicked.connect(self.anadirMedBus)
+            self.addedtmed.clicked.connect(self.anadirMedEdit)
+            self.canceledtmed.clicked.connect(self.volver)
+            self.groupBox_8.hide()
+        elif index == 3:
+            regex = r'^[a-zA-Z0-9]+$'
+            validator = QRegExpValidator(QRegExp(regex))
+            self.reg_eliminar.setValidator(validator)
+            self.medeliminar.clicked.connect(self.eliminarmed)
+            
+    def anadirMedNuevo(self):
+        try:
+            self.addmed.clicked.disconnect()
+        except TypeError:
+            pass
+        self.addmed.clicked.connect(self.okMedNuevo)
+
+    def anadirMedBus(self):
+        try:
+            self.buscarmed.clicked.disconnect()
+        except TypeError:
+            pass
+        self.buscarmed.clicked.connect(self.busquedaMed)
+       
+    def anadirMedEdit(self):
+        try:
+            self.addedtmed.clicked.disconnect()
+        except TypeError:
+            pass
+        self.addedtmed.clicked.connect(self.okMedEdit)
+        
+    def anadirMedEli(self):
+        try:
+            self.medeliminar.clicked.disconnect()
+        except TypeError:
+            pass
+        self.medeliminar.clicked.connect(self.eliminarmed)   
+   
+    def okMedNuevo(self):
+        namemed = self.namemed.text().upper()
+        lastnamemed = self.lastnamemed.text().upper()
+        agemed = self.agemed.text()
+        regmed = self.regmed.setText("")
+        espmed = self.espmed.setText("")
+        if not namemed or not lastnamemed or not agemed or not agemed or not regmed or not espmed:
+            msgBox = QMessageBox()
+            msgBox.setIcon(QMessageBox.Warning)
+            msgBox.setText('Por favor, complete todos los campos.')
+            msgBox.setWindowTitle('Campos incompletos')
+            msgBox.setStandardButtons(QMessageBox.Ok)
+            self.limpiar_campos_MedNuevo()
+            msgBox.exec()
+        else:
+            bool = self.Controller.ingresarMedCont(namemed, lastnamemed, agemed, agemed, regmed, espmed)
+            if bool:
+                msgBox = QMessageBox()
+                msgBox.setIcon(QMessageBox.Warning)
+                msgBox.setText('Médico ingresado exitosamente')
+                msgBox.setWindowTitle('Médico ingresado')
+                msgBox.setStandardButtons(QMessageBox.Ok)
+                self.limpiar_campos_MedNuevo()
+                self.groupBox_8.hide()
+                msgBox.exec()
+            else:
+                msgBox = QMessageBox()
+                msgBox.setIcon(QMessageBox.Warning)
+                msgBox.setText('Ya existe un usuario con el ID diligenciado.\nIngrese uno diferente.')
+                msgBox.setWindowTitle('Usuario existente')
+                msgBox.setStandardButtons(QMessageBox.Ok)
+                self.limpiar_campos_MedNuevo()
+                self.agemed.setText("SELECCIONE EL ARCHIVO")
+                msgBox.exec()
+        
+    def okMedEdit(self):
+        nameedtmed = self.nameedtmed.text().upper()
+        lastnameedtmed = self.lastnameedtmed.text().upper()
+        ageedtmed = self.ageedtmed.text()
+        regedtmed = self.regedtmed.setText("")
+        espedtmed = self.espedtmed.setText("")
+        reg_buscar = self.reg_buscar.text()
+        if not nameedtmed or not lastnameedtmed or not ageedtmed or not ageedtmed or not espedtmed:
+            msgBox = QMessageBox()
+            msgBox.setIcon(QMessageBox.Warning)
+            msgBox.setText('Por favor, complete todos los campos.')
+            msgBox.setWindowTitle('Campos incompletos')
+            msgBox.setStandardButtons(QMessageBox.Ok)
+            self.limpiar_campos_MedEdit()
+            msgBox.exec()
+        else:
+            bool = self.Controller.editarMedCont(reg_buscar, regedtmed, nameedtmed, lastnameedtmed, ageedtmed, ageedtmed, espedtmed)
+            if bool:
+                msgBox = QMessageBox()
+                msgBox.setIcon(QMessageBox.Warning)
+                msgBox.setText('Médico ingresado exitosamente')
+                msgBox.setWindowTitle('Médico ingresado')
+                msgBox.setStandardButtons(QMessageBox.Ok)
+                self.limpiar_campos_MedEdit()
+                self.groupBox_8.hide()
+                msgBox.exec()
+            else:
+                msgBox = QMessageBox()
+                msgBox.setIcon(QMessageBox.Warning)
+                msgBox.setText('No existe un mpedico con el registro diligenciado.')
+                msgBox.setWindowTitle('Médico existente')
+                msgBox.setStandardButtons(QMessageBox.Ok)
+                self.limpiar_campos_MedEdit()
+                msgBox.exec()
+
+    def limpiar_campos_MedNuevo(self):
+        self.namemed.setText("")
+        self.lastnamemed.setText("")
+        self.agemed.setText("")
+        self.regmed.setText("")
+        self.espmed.setText("")
+        self.regedtmed.setText("")
     
+    def limpiar_campos_MedEdit(self):
+        self.nameedtmed.setText("")
+        self.lastnameedtmed.setText("")
+        self.ageedtmed.setText("")
+        self.regedtmed.setText("")
+        self.espedtmed.setText("")
+
+    def volver(self):
+        self.namemed.setText("")
+        self.lastnamemed.setText("")
+        self.agemed.setText("")
+        self.regmed.setText("")
+        self.espmed.setText("")
+        self.regedtmed.setText("")
+        self.nameedtmed.setText("")
+        self.lastnameedtmed.setText("")
+        self.ageedtmed.setText("")
+        self.regedtmed.setText("")
+        self.espedtmed.setText("")
+        self.edicionesmed.setCurrentIndex(0)
+        
+    def busquedaMed(self):
+        reg_buscar = self.reg_buscar.text()
+        if not reg_buscar:
+            msgBox = QMessageBox()
+            msgBox.setIcon(QMessageBox.Warning)
+            msgBox.setText('Por favor, complete el campo.')
+            msgBox.setWindowTitle('Campo incompleto')
+            msgBox.setStandardButtons(QMessageBox.Ok)
+            self.regedtmed.setText("")
+            msgBox.exec()
+        else:
+            if self.Controller.validarMedCont(reg_buscar):
+                msgBox = QMessageBox()
+                msgBox.setIcon(QMessageBox.Warning)
+                msgBox.setText('No existe un médico con el registro diligenciado.')
+                msgBox.setWindowTitle('Médico no existe')
+                msgBox.setStandardButtons(QMessageBox.Ok)
+                self.regedtmed.setText("")
+                msgBox.exec()
+            else:
+                self.groupBox_8.show()
+
+    def eliminarmed(self):
+        reg_eliminar = self.reg_eliminar.text()
+        if not reg_eliminar:
+            msgBox = QMessageBox()
+            msgBox.setIcon(QMessageBox.Warning)
+            msgBox.setText('Por favor, complete el campo.')
+            msgBox.setWindowTitle('Campo incompleto')
+            msgBox.setStandardButtons(QMessageBox.Ok)
+            self.reg_eliminar.setText("")
+            msgBox.exec()  
+        else:
+            bool = self.Controller.eliminarmedCont(reg_eliminar)
+            if bool:
+                msgBox = QMessageBox()
+                msgBox.setIcon(QMessageBox.Warning)
+                msgBox.setText('Médico no existente en la base de datos')
+                msgBox.setWindowTitle('Médico no existente')
+                msgBox.setStandardButtons(QMessageBox.Ok)
+                self.reg_eliminar.setText("")
+                msgBox.exec()
+            elif bool == False:
+                msgBox = QMessageBox()
+                msgBox.setIcon(QMessageBox.Warning)
+                msgBox.setText('Médico eliminado exitosamente')
+                msgBox.setWindowTitle('Médico eliminado')
+                msgBox.setStandardButtons(QMessageBox.Ok)
+                self.reg_eliminar.setText("")
+                msgBox.exec()       
     # Metodos de implementación de eventos de ratón, dado que la ventana es personalizada
     def mousePressEvent(self, event): # Inicia el arrastre
         if event.buttons() == Qt.LeftButton:
@@ -828,7 +1038,6 @@ class VisualizadorDICOM(QDialog):
                 self.label.setPixmap(pixmap)
                 self.label.setScaledContents(True)  # Ajustar la imagen al tamaño del QLabel
                 self.slider.setValue(self.indice_actual)
-
 
     def avanzar_imagen(self):
         self.indice_actual += 1
