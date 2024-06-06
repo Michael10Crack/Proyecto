@@ -148,8 +148,9 @@ class manejoUsuarios:
         acceso = open('acceso.json', mode = 'r', encoding = 'utf8')
         a = json.load(acceso)
         acceso.close()
-        if a[0]['usuario'] == self.__username and a[0]['contrasena'] == self.__password:
-            return True
+        for credencial in a:
+            if credencial["usuario"] == self.__username and credencial["contrasena"] == self.__password:
+                return True
         return False
     
     def nuevousuario(self, username:str, password:str):

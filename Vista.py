@@ -3,7 +3,7 @@ import pydicom
 import os
 import cv2
 from Controlador import *
-from PyQt5.QtWidgets import QApplication, QDialog, QMessageBox, QLineEdit, QFileDialog, QVBoxLayout, QLabel, QPushButton, QMessageBox
+from PyQt5.QtWidgets import QApplication, QDialog, QMessageBox, QLineEdit, QFileDialog, QVBoxLayout, QLabel, QPushButton, QMessageBox, QSlider, QFrame, QHBoxLayout
 from PyQt5.QtGui import QRegExpValidator, QPixmap
 from PyQt5.QtCore import Qt, QRegExp, QTimer
 from PyQt5.uic import loadUi
@@ -476,6 +476,14 @@ class programa(QDialog):
                         # Procesar el archivo DICOM
                             manejador_dicom = self.Controller.manejodicompath(dicom_data)
                             imagen_procesada = self.Controller.apply_modality_lut(manejador_dicom.pixel_array)
+                        # Cadena original 
+                            ruta_carpeta
+                            # Dividir la cadena en partes utilizando "/" como separador
+                            partes = ruta_carpeta.split("/")
+                            # Buscar la parte que contiene "Archivos_Dicom"
+                            indice_archivos_dicom = partes.index("Archivos_Dicom")
+                            # Guardar la parte de la cadena desde "Archivos_Dicom" en adelante
+                            ruta_carpeta = "/".join(partes[indice_archivos_dicom:])
                         self.urlpe = ruta_carpeta
                         self.urlpn = ruta_carpeta
                         self.exito(ruta_carpeta)
@@ -692,11 +700,13 @@ class programa(QDialog):
             self.idpac_buscar.setText("")
             msgBox.exec()
         else:
-            namepac, lastnamepac, agepac, idpac, medpac, url, = self.Controller.pacienteCon(idpac_estudio)
+            namepac, lastnamepac, agepac, idpac, medpac, url = self.Controller.pacienteCon(idpac_estudio)
             self.hide()
             self.verEstudio.show()
-            ruta = r'C:\Users\avata\OneDrive\Desktop\Proyecto - copia\Archivos_Dicom\501.000000-T2 TSE ax hi-71811'
-            self.verEstudio.initUI(ruta)
+            self.verEstudio.setup()
+            self.verEstudio.initUI(url)
+            self.verEstudio.setup2(namepac, lastnamepac, agepac, idpac, medpac)
+            
     
     def exito(self, ruta_carpeta):
         # Mostrar una ventana emergente con un mensaje de procesamiento exitoso
@@ -742,8 +752,8 @@ class programa(QDialog):
             pass
 
 class VisualizadorDICOM(QDialog):
-    def __init__(self):
-        super().__init__()
+    def _init_(self):
+        super()._init_()
         self.ruta_carpeta = None
         self.archivos_dicom = []
         self.indice_actual = 0
@@ -752,36 +762,62 @@ class VisualizadorDICOM(QDialog):
         self.setup()
 
     def setup(self):
+        self.Controller = controlador()
         loadUi("imagenes_dicom.ui", self)
-        self.label = QLabel()
-        self.label.setAlignment(Qt.AlignCenter)
-        self.layout = QVBoxLayout()
-        self.layout.addWidget(self.label)
-        self.setLayout(self.layout)
+
+        self.label = self.findChild(QLabel, "label")
+        self.frame_principal = self.findChild(QFrame, "frame_principal")
+        self.btn_minimizar = self.findChild(QPushButton, "minimizar")
+        self.btn_cerrar = self.findChild(QPushButton, "exit")
+        self.btn_adelante = self.findChild(QPushButton, "adelante")
+        self.btn_atras = self.findChild(QPushButton, "atras")
+        self.slider = self.findChild(QSlider, "slider")
+
+        self.layout_principal = QVBoxLayout(self)
+        self.layout_principal.addWidget(self.frame_principal)
+        self.setLayout(self.layout_principal)
+
+        # Conectar los eventos
+        self.btn_minimizar.clicked.connect(self.minimizator)
+        self.btn_cerrar.clicked.connect(self.salir)
+        self.btn_adelante.clicked.connect(self.avanzar_imagen)
+        self.btn_atras.clicked.connect(self.retroceder_imagen)
+        self.slider.sliderMoved.connect(self.slider_moved)
+
+    def setup2(self, namepac, lastnamepac, agepac, idpac, medpac):
+        self.nombreline.setText(namepac)
+        self.apellidoline.setText(lastnamepac)
+        self.edadline.setText(agepac)
+        self.idline.setText(idpac)
+        self.medicoline.setText(medpac)
+
+    def minimizator(self):
+        self.showMinimized()
+    
+    def salir(self):
+        self.Controller.desconectar()
+        QApplication.quit()
 
     def initUI(self, ruta):
         self.ruta_carpeta = ruta
-        # Configurar el timer para cambiar las imágenes automáticamente
-        self.timer = QTimer(self)
-        self.timer.timeout.connect(self.mostrar_siguiente_imagen)
-        self.timer.start(2000)  # Cambiar la imagen cada 2 segundos
-
-        # Obtener la lista de archivos DICOM en la carpeta especificada
         self.archivos_dicom = [os.path.join(ruta, file) for file in os.listdir(ruta) if file.endswith('.dcm')]
-        self.indice_actual = 0  # Índice de la imagen actual
+        self.indice_actual = 0
+        self.slider.setMaximum(len(self.archivos_dicom) - 1)  # Establecer el maximo del slider
 
-        # Mostrar la primera imagen
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.avanzar_imagen)
+        # self.timer.start(2000)  # Cambiar la imagen cada 2 segundos
+
         self.mostrar_siguiente_imagen()
 
     def mostrar_siguiente_imagen(self):
         if self.archivos_dicom:
-            if self.indice_actual < len(self.archivos_dicom):
+            if 0 <= self.indice_actual < len(self.archivos_dicom):
                 archivo_dicom = self.archivos_dicom[self.indice_actual]
                 imagen_dicom = pydicom.dcmread(archivo_dicom)
                 pixel_data = imagen_dicom.pixel_array
 
                 imagen_normalizada = cv2.normalize(pixel_data, None, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX)
-
                 alpha = 1.5
                 beta = 50
                 imagen_ajustada = cv2.convertScaleAbs(imagen_normalizada, alpha=alpha, beta=beta)
@@ -790,10 +826,26 @@ class VisualizadorDICOM(QDialog):
 
                 pixmap = QPixmap.fromImage(imagen_qt)
                 self.label.setPixmap(pixmap)
+                self.label.setScaledContents(True)  # Ajustar la imagen al tamaño del QLabel
+                self.slider.setValue(self.indice_actual)
 
-                self.indice_actual += 1
-            else:
-                self.indice_actual = 0
+
+    def avanzar_imagen(self):
+        self.indice_actual += 1
+        if self.indice_actual >= len(self.archivos_dicom):
+            self.indice_actual = 0
+        self.mostrar_siguiente_imagen()
+
+    def retroceder_imagen(self):
+        self.indice_actual -= 1
+        if self.indice_actual < 0:
+            self.indice_actual = len(self.archivos_dicom) - 1
+        self.mostrar_siguiente_imagen()
+
+    def slider_moved(self, value):
+        self.indice_actual = value
+        self.mostrar_siguiente_imagen()
+
 
 
 if __name__ == '__main__':
@@ -801,4 +853,3 @@ if __name__ == '__main__':
     login = ventanaLogin()
     login.show()
     sys.exit(app.exec_())
-
