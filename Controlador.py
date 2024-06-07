@@ -31,13 +31,16 @@ class controlador:
         return self.__controlador.paciente(idpac_estudio)
     
     def validarMedCont(self, reg:str):
-        return self.__controlador.validarMed(self, reg)
+        return self.__controlador.validarMed(reg)
     
     def ingresarMedCont(self, namemed:str, lastnamemed:str, agemed:str, num_registro:str, esp:str):
         return self.__controlador.ingresarMed(namemed, lastnamemed, agemed, num_registro, esp)
     
     def eliminarmedCont(self, num_registro:str):
         return self.__controlador.eliminarmed(num_registro)
+    
+    def editarMedCont(self,  num_registro:str, nuevoreg:str, namemed:str, lastnamemed:str, agemed:str, esp:str):
+        return self.__controlador.editarMed(num_registro, nuevoreg, namemed, lastnamemed, agemed, esp)
         
     def ingresoCont(self, username:str, password:str):
         return self.__acceso.ingreso(username, password)

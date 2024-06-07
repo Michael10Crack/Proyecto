@@ -692,25 +692,26 @@ class programa(QDialog):
             msgBox.setWindowTitle('Campo incompleto')
             msgBox.setStandardButtons(QMessageBox.Ok)
             self.idpac_eliminar.setText("")
-            msgBox.exec()  
+            msgBox.exec() 
+            return 
+        
+        bool = self.Controller.eliminarPacCont(idpac_eliminar)
+        msgBox = QMessageBox()
+
+        if bool:
+            msgBox.setIcon(QMessageBox.Information)
+            msgBox.setText('Paciente eliminado exitosamente')
+            msgBox.setWindowTitle('Paciente eliminado')
+            msgBox.setStandardButtons(QMessageBox.Ok)
+            self.idpac_eliminar.setText("")
+            msgBox.exec()
         else:
-            bool = self.Controller.eliminarPacCont(idpac_eliminar)
-            if bool:
-                msgBox = QMessageBox()
-                msgBox.setIcon(QMessageBox.Warning)
-                msgBox.setText('Paciente no existente en la base de datos')
-                msgBox.setWindowTitle('Paciente no existente')
-                msgBox.setStandardButtons(QMessageBox.Ok)
-                self.idpac_eliminar.setText("")
-                msgBox.exec()
-            elif bool == False:
-                msgBox = QMessageBox()
-                msgBox.setIcon(QMessageBox.Warning)
-                msgBox.setText('Paciente eliminado exitosamente')
-                msgBox.setWindowTitle('Paciente eliminado')
-                msgBox.setStandardButtons(QMessageBox.Ok)
-                self.idpac_eliminar.setText("")
-                msgBox.exec()
+            msgBox.setIcon(QMessageBox.Warning)
+            msgBox.setText('Paciente no existente en la base de datos')
+            msgBox.setWindowTitle('Paciente no existente')
+            msgBox.setStandardButtons(QMessageBox.Ok)
+            self.idpac_eliminar.setText("")
+            msgBox.exec()
                 
     def estudio(self):
         texto = self.idpac_estudio.text()
@@ -870,7 +871,7 @@ class programa(QDialog):
         ageedtmed = self.ageedtmed.text()
         regedtmed = self.regedtmed.text()
         espedtmed = self.espedtmed.text()
-        reg_buscar = self.reg_buscar.text()
+        reg_buscar = self.reg_buscar_2.text()
         if not nameedtmed or not lastnameedtmed or not ageedtmed or not ageedtmed or not espedtmed:
             msgBox = QMessageBox()
             msgBox.setIcon(QMessageBox.Warning)
@@ -880,7 +881,7 @@ class programa(QDialog):
             self.limpiar_campos_MedEdit()
             msgBox.exec()
         else:
-            bool = self.Controller.editarMedCont(reg_buscar, regedtmed, nameedtmed, lastnameedtmed, ageedtmed, ageedtmed, espedtmed)
+            bool = self.Controller.editarMedCont(regedtmed, nameedtmed, lastnameedtmed, ageedtmed, ageedtmed, espedtmed)
             if bool:
                 msgBox = QMessageBox()
                 msgBox.setIcon(QMessageBox.Warning)
